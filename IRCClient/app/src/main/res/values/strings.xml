@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">IRC Client</string>
+    <string name="nick">Nick</string>
+    <string name="channel">Channel</string>
+    <string name="startButton">S T A R T</string>
+</resources>
