@@ -6,4 +6,5 @@
     <color name ="white">#FFF</color>
     <color name ="startColor">#30AE5C</color>
     <color name ="black">#000</color>
+    <color name="darkgray">#6c6c6c</color>
 </resources>
