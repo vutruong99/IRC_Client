@@ -3,4 +3,6 @@
     <string name="nick">Nick</string>
     <string name="channel">Channel</string>
     <string name="startButton">S T A R T</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>

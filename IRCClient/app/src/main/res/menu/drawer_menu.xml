@@ -1,25 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="navigation_view ">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <group android:checkableBehavior="single">
-        <item android:id="@+id/channel1"
-            android:icon="@drawable/ic_chat_black_24dp"
-            android:title="Channel 1">
 
-        </item>
+    <item android:id="@+id/search"
+        android:icon="@drawable/ic_search"
+        android:title="Search"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView">
 
-        <item android:id="@+id/channel2"
-            android:icon="@drawable/ic_chat_black_24dp"
-            android:title="Channel 2">
+    </item>
 
-        </item>
+    <item android:id="@+id/channel1"
+        android:icon="@drawable/ic_chat_black_24dp"
+        android:title="Channel 1"
+        app:showAsAction="never">
 
-        <item android:id="@+id/channel3"
-            android:icon="@drawable/ic_chat_black_24dp"
-            android:title="Channel 3">
+    </item>
 
-        </item>
-    </group>
+    <item android:id="@+id/channel2"
+        android:icon="@drawable/ic_chat_black_24dp"
+        android:title="Channel 2"
+        app:showAsAction="never">
+
+    </item>
+
+    <item android:id="@+id/channel3"
+        android:icon="@drawable/ic_chat_black_24dp"
+        android:title="Channel 3"
+        app:showAsAction="never">
+
+    </item>
+
 </menu>
