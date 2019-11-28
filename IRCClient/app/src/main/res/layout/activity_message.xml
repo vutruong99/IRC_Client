@@ -54,7 +54,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:layout_marginBottom="47dp"
         android:background="@color/white"
         app:headerLayout="@layout/drawer_header_left"
         app:itemIconTint="@color/darkgray"
