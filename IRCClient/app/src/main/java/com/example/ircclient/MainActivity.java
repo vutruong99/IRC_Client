@@ -136,13 +136,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         else if (id == R.id.settings) {
-//            SettingFragment settingFragment = new SettingFragment();
-//            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//            fragmentTransaction.replace(R.id.layout_for_fragments, settingFragment, "Setting Fragment");
-//            fragmentTransaction.commit();
-            Intent intent = new Intent(this, SettingActivity.class);
-            startActivity(intent);
-            return true;
+            SettingFragment settingFragment = new SettingFragment();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.layout_for_fragments, settingFragment, "Setting Fragment");
+            fragmentTransaction.commit();
         }
 
         else if (id == R.id.about) {
