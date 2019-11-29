@@ -1,6 +1,7 @@
 package com.example.ircclient;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import org.w3c.dom.Text;
@@ -72,17 +74,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.replace(R.id.layout_for_fragments, messageFragment, "Message Fragment");
         fragmentTransaction.commit();
 
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.drawer_menu, menu);
+        inflater.inflate(R.menu.settings_menu, menu);
 
-        MenuItem searchItem = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     private void configureToolbar(){
@@ -123,12 +123,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int itemId = item.getItemId();
 
         switch (itemId){
-            case android.R.id.home:
-                drawerLayout.openDrawer(GravityCompat.START);
+            case R.id.action_settings:
+                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                startActivity(intent);
                 return true;
         }
 
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -145,10 +146,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         else if (id == R.id.settings) {
-            SettingFragment settingFragment = new SettingFragment();
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.layout_for_fragments, settingFragment, "Setting Fragment");
-            fragmentTransaction.commit();
+            Intent intent = new Intent(this, SettingActivity.class);
+            startActivity(intent);
+            return true;
         }
 
         else if (id == R.id.about) {

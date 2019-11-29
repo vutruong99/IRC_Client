@@ -6,6 +6,13 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
 
+    <!-- Setting preferences   -->
+    <string name="action_settings">Settings here</string>
+    <string name="switch_theme">Turn on Dark mode</string>
+    <string name="switch_detail">Switch between Dark mode and Light mode </string>
+    <string name="check_notification">Turn on notification</string>
+    <string name="check_detail">Get the latest notification about your channels</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
