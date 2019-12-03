@@ -1,6 +1,7 @@
 package com.example.ircclient;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import org.w3c.dom.Text;
@@ -44,30 +46,43 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
+        Intent intent = getIntent();
+        //Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-        configureNavigationDrawer();
-        configureToolbar();
+        //
+        drawerLayout = findViewById(R.id.drawer);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
+        drawerLayout.addDrawerListener(toggle);
+
+        toggle.syncState();
+
+        //configureNavigationDrawer();
+        //configureToolbar();
 
         NavigationView navigationView = findViewById(R.id.navigation);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View headerView = navigationView.getHeaderView(0);
+        TextView name = (TextView) headerView.findViewById(R.id.username_navbar);
+        name.setText(intent.getStringExtra("nick"));
+
         // Call MessageFragment by default
         MessageFragment messageFragment = new MessageFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.layout_for_fragments, messageFragment, "Message Fragment");
         fragmentTransaction.commit();
 
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.drawer_menu, menu);
+        inflater.inflate(R.menu.settings_menu, menu);
 
-        MenuItem searchItem = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     private void configureToolbar(){
@@ -108,12 +123,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int itemId = item.getItemId();
 
         switch (itemId){
-            case android.R.id.home:
-                drawerLayout.openDrawer(GravityCompat.START);
+            case R.id.action_settings:
+                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                startActivity(intent);
                 return true;
         }
 
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -121,14 +137,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         int id = menuItem.getItemId();
 
-        if (id == R.id.messages) {
-            MessageFragment messageFragment = new MessageFragment();
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.layout_for_fragments, messageFragment, "Message Fragment");
-            fragmentTransaction.commit();
-        }
 
-        else if (id == R.id.channels) {
+        if (id == R.id.channels) {
             ChannelFragment channelFragment = new ChannelFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.layout_for_fragments, channelFragment, "Channel Fragment");
@@ -136,10 +146,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         else if (id == R.id.settings) {
-            SettingFragment settingFragment = new SettingFragment();
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.layout_for_fragments, settingFragment, "Setting Fragment");
-            fragmentTransaction.commit();
+            Intent intent = new Intent(this, SettingActivity.class);
+            startActivity(intent);
+            return true;
         }
 
         else if (id == R.id.about) {
@@ -150,8 +159,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         else if (id == R.id.logout) {
-            Intent intent = new Intent(MainActivity.this, LogInActivity.class);
-            startActivity(intent);
+            this.finish();
+            System.exit(0);
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);

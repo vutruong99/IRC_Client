@@ -2,10 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/messages"
-        android:title="Messages"
-        android:icon="@drawable/ic_more"/>
-    <item
         android:id="@+id/channels"
         android:title="Channels"
         android:icon="@drawable/ic_menu" />

@@ -11,15 +11,16 @@
         android:layout_width="75dp"
         android:layout_height="75dp" />
     <TextView
+        android:id="@+id/username_navbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Vu Vivu"
-        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textColor="@color/black"
         android:layout_marginTop="5dp"/>
     <TextView
+        android:id="@+id/useremail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="vudepzaivivu@gmail.com"
         android:textColor="@color/white"/>
 
 </LinearLayout>
