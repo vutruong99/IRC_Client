@@ -12,7 +12,7 @@
         android:text="THIS IS THE SETTING FRAGMENT"
         android:textSize="40sp"
         android:gravity="center"
-        android:textColor="@color/black"/>
+        android:textColor="@color/lightGrey"/>
 
 
 </FrameLayout>

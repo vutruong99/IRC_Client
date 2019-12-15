@@ -1,6 +1,7 @@
 package com.example.ircclient;
 
 import android.content.Intent;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -16,8 +17,15 @@ public class LogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_login);
 
+        StrictMode.ThreadPolicy policy = new StrictMode
+                .ThreadPolicy
+                .Builder()
+                .permitAll()
+                .build();
+        StrictMode.setThreadPolicy(policy);
+
         final EditText etNick = (EditText) findViewById(R.id.etNick);
-        EditText etChannel = (EditText) findViewById(R.id.etChannel);
+        final EditText etChannel = (EditText) findViewById(R.id.etChannel);
 
         final Button startButton = (Button) findViewById(R.id.startButton);
 
@@ -89,8 +97,10 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String nick = etNick.getText().toString();
+                String channel = etChannel.getText().toString();
                 Intent intent = new Intent(LogInActivity.this, MainActivity.class);
                 intent.putExtra("nick", nick);
+                intent.putExtra("channel", channel);
                 startActivity(intent);
             }
         });

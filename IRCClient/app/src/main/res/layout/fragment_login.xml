@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_login"
+    android:background="@drawable/login"
     android:gravity="center_vertical"
     android:orientation="vertical"
     android:paddingBottom="100dp"
@@ -15,16 +15,17 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="C H A T U S "
-        android:textColor="@color/black"
-        android:textSize="30sp" />
+        android:textColor="@color/white"
+        android:textSize="50sp" />
 
     <TextView
         android:id="@+id/nick"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="55dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:text="@string/nick"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -36,6 +37,7 @@
         android:layout_gravity="center"
         android:background="@drawable/custom_edit_text_box"
         android:inputType="text"
+        android:textColor="@color/white"
         android:padding="10dp" />
 
     <TextView
@@ -43,10 +45,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="55dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:text="@string/channel"
         android:textSize="20sp"
+        android:textColor="@color/white"
         android:textStyle="bold" />
 
     <EditText
@@ -56,6 +59,7 @@
         android:layout_gravity="center"
         android:background="@drawable/custom_edit_text_box"
         android:inputType="text"
+        android:textColor="@color/white"
         android:padding="10dp" />
 
     <Button

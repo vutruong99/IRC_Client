@@ -2,6 +2,7 @@ package com.example.ircclient;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -10,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -21,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
@@ -29,6 +32,8 @@ import android.widget.ToggleButton;
 import org.w3c.dom.Text;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,21 +51,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
+        //Getting intent values (nick and channel
         Intent intent = getIntent();
+        String nick = intent.getStringExtra("nick");
+        String channel = intent.getStringExtra("channel");
+
         //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //
+        //Drawer toolbar
         drawerLayout = findViewById(R.id.drawer);
         toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(toggle);
 
         toggle.syncState();
 
-        //configureNavigationDrawer();
-        //configureToolbar();
-
+        //Navigation view for side bar navigation
         NavigationView navigationView = findViewById(R.id.navigation);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -70,6 +77,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Call MessageFragment by default
         MessageFragment messageFragment = new MessageFragment();
+
+        // Create a bundle to pass arguments to the fragment
+        Bundle bundle = new Bundle();
+        bundle.putString("nick", nick);
+        bundle.putString("channel", channel);
+        messageFragment.setArguments(bundle);
+
+        // Start asynchronous task in fragment
+        messageFragment.startConnect();
+
+        //Show the fragment
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.layout_for_fragments, messageFragment, "Message Fragment");
         fragmentTransaction.commit();
@@ -83,39 +101,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         inflater.inflate(R.menu.settings_menu, menu);
 
         return true;
-    }
-
-    private void configureToolbar(){
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_more);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-    }
-
-    private void configureNavigationDrawer(){
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-
-        /*NavigationView navView = (NavigationView) findViewById(R.id.navigation);
-        navView.setNavigationItemSelectedListener((new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            //work with items in navigation view
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                Fragment f = null;
-                int itemId = menuItem.getItemId();
-
-                // on Item click
-                if(f != null){
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id., f);
-                    transaction.commit();
-                    drawerLayout.closeDrawer();
-                    return true;
-                }
-
-                return false;
-            }
-        }));*/
     }
 
     @Override
@@ -136,7 +121,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
         int id = menuItem.getItemId();
-
 
         if (id == R.id.channels) {
             ChannelFragment channelFragment = new ChannelFragment();
@@ -166,4 +150,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.closeDrawer(GravityCompat.START);
         return false;
     }
+
 }

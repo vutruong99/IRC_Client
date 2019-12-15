@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:maxWidth="240dp"
         android:padding="8dp"
+        android:textSize="25sp"
         android:textColor="@color/black"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
@@ -26,7 +27,8 @@
         android:text="11:40"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="10sp"
+        android:textSize="20sp"
+        android:textColor="@color/lightGrey"
         android:layout_marginRight="4dp"
         app:layout_constraintBottom_toBottomOf="@+id/text_message_body"
         app:layout_constraintRight_toLeftOf="@+id/text_message_body" />

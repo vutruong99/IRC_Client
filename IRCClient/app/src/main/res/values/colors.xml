@@ -7,4 +7,8 @@
     <color name ="startColor">#30AE5C</color>
     <color name ="black">#000</color>
     <color name="darkgray">#6c6c6c</color>
+    <color name="discordBlue">#7289DA</color>
+    <color name="lightGrey">#99aab5</color>
+    <color name="discordLightBlack">#2c2f33</color>
+    <color name="discordBlack">#23272A</color>
 </resources>
