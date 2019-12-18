@@ -32,10 +32,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         convertView = inflater.inflate(mResource, parent, false);
 
         TextView tv1 = (TextView)convertView.findViewById(R.id.text_message_body);
-        TextView tv2 = (TextView)convertView.findViewById(R.id.text_message_time);
+//        TextView tv2 = (TextView)convertView.findViewById(R.id.text_message_time);
 
         tv1.setText(content);
-        tv2.setText(time);
+//        tv2.setText(time);
 
         return convertView;
     }

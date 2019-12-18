@@ -43,13 +43,14 @@
         android:layout_marginLeft="8dp" />
 
     <TextView
-        android:id="@+id/text_message_time"
-        android:text="11:40"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="10sp"
-        app:layout_constraintLeft_toRightOf="@+id/text_message_body"
+        android:id="@+id/text_message_time_received"
+        android:layout_width="75dp"
+        android:layout_height="24dp"
         android:layout_marginLeft="4dp"
-        app:layout_constraintBottom_toBottomOf="@+id/text_message_body" />
+        android:text="11:40"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/text_message_body"
+        app:layout_constraintLeft_toRightOf="@+id/text_message_body" />
 
 </android.support.constraint.ConstraintLayout>

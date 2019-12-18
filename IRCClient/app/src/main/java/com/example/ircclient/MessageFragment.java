@@ -32,6 +32,7 @@ public class MessageFragment extends Fragment {
 
     Connection connection;
     MessageAdapter adapter;
+    String strTime;
     private ArrayAdapter<String> adapter2;
     private ListView logs;
     private List<String> items =new ArrayList<>();
@@ -61,7 +62,11 @@ public class MessageFragment extends Fragment {
 
         // logs = a list view of what we see from server + messages
         logs = (ListView) v.findViewById(R.id.message_container);
-        adapter2 = new LogsAdapter<>(getActivity(),items);
+//        adapter2 = new LogsAdapter<>(getActivity(),items);
+        adapter2 = new LogsAdapter(getActivity(),items );
+
+
+
         logs.setAdapter(adapter2);
 
         // Set to scroll to bottom
@@ -74,16 +79,18 @@ public class MessageFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                // parseIn = translate text input to send
-                parseIn(chatBox.getText().toString(),bundle.getString("channel"));
-                chatBox.getText().clear();
-
-                /*//Get time and convert to string
+                //Get time and convert to string
                 Date currentTime = Calendar.getInstance().getTime();
                 DateFormat dateFormat = new SimpleDateFormat("hh:mm");
-                String strTime = dateFormat.format(currentTime);
+                strTime = dateFormat.format(currentTime);
 
-                //Get message
+                // parseIn = translate text input to send
+                parseIn(chatBox.getText().toString() + "``<<time>>"+ strTime + "``",bundle.getString("channel"));
+                chatBox.getText().clear();
+
+
+
+               /*/ //Get message
                 String getMessage = chatBox.getText().toString();
 
                 //Create new message in Message class
@@ -141,13 +148,14 @@ public class MessageFragment extends Fragment {
 
     // PRIVMSG = Command to send message in IRC
     private void privmsg(String channel, String message) {
-        connection.send("PRIVMSG " + channel + " :" + message);
+        connection.send("PRIVMSG "+ channel + " :" + message + "received");
 
         //Format the thing
-        log(String.format("<font color=\"#FF4500\">%s</font>: " +
-                "<font color=\"#FF4500\">&lt;</font>" +
-                "%s<font color=\"#FF4500\">&gt;</font> " +
-                "%s", channel, connection.nick, message));
+//        log(String.format("<font color=\"#FF4500\">%s</font>: " +
+//                "<font color=\"#FF4500\">&lt;</font>" +
+//                "%s<font color=\"#FF4500\">&gt;</font> " +
+//                "%s", channel, connection.nick, message));
+        log("fromuser "+channel + ": " + connection.nick+ " " +message );
     }
 
     private void parseSrv(String message) {
@@ -158,6 +166,7 @@ public class MessageFragment extends Fragment {
         String tmp[];
 
         if (command.isEmpty())
+
             return;
 
         if (command.charAt(0) == ':') {
@@ -168,6 +177,7 @@ public class MessageFragment extends Fragment {
             command = tmp[1];
             user = user.split("!", 2)[0];
         }
+
 
         tmp = command.split(" ", 2);
         command = tmp[0];
@@ -185,10 +195,11 @@ public class MessageFragment extends Fragment {
         if (command.equals("PING")) {}
 
         else if (command.equals("PRIVMSG"))
-            log(String.format("<font color=\"#A500A5\">%s</font>: " +
-                    "<font color=\"#009c00\">&lt;</font>" +
-                    "%s<font color=\"#009c00\">&gt;</font> " +
-                    "%s", param, user, text));
+//            log(String.format("<font color=\"#A500A5\">%s</font>: " +
+//                    "<font color=\"#009c00\">&lt;</font>" +
+//                    "%s<font color=\"#009c00\">&gt;</font> " +
+//                    "%s", param, user, text));
+            log(param+ user + text);
         else if (command.equals("JOIN")) {
             param = !param.isEmpty() ? param : text;
             if (user.equals(connection.nick)) {

@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/text_message_time"
+        android:id="@+id/text_message_time_sent"
         android:text="11:40"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
