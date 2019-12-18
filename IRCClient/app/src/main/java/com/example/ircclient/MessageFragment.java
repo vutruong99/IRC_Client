@@ -238,20 +238,8 @@ public class MessageFragment extends Fragment {
 //                    "%s<font color=\"#009c00\">&gt;</font> " +
 //                    "%s", param, user, text));
             strTime = dateFormat.format(currentTime);
-            Log.i("Parse", "parseSrv: "+ text);
-//
-            byte[] ptext = text.getBytes(ISO_8859_1);
-            String value = new String(ptext, UTF_8);
-//            byte[] byteText = text.getBytes(Charset.forName("UTF-8"));
-            //To get original string from byte.
-//            String value="";
-//            try {
-//                value= new String(byteText , "UTF-8");
-//            } catch (UnsupportedEncodingException e) {
-//                e.printStackTrace();
-//            }
-            Log.i("Converted", "parseSrv: "+ value);
-            log(param + user + value+  "ê "+"``<<time>>"+ strTime + "``" + "received" );
+            Log.i("Converted", "parseSrv: "+ text);
+            log(param + user + text+ "``<<time>>"+ strTime + "``" + "received" );
         }
         else if (command.equals("JOIN")) {
             param = !param.isEmpty() ? param : text;

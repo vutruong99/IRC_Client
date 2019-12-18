@@ -12,6 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,6 +36,7 @@ public class LogsAdapter extends ArrayAdapter<String> {
 
 
         String time="";
+        item = StringEscapeUtils.unescapeHtml4(item);
         // get time from user message
         if(item.contains("<<time>>")){
             Pattern pattern = Pattern.compile("``(.*?)``");
@@ -94,6 +97,7 @@ public class LogsAdapter extends ArrayAdapter<String> {
         TextView message_sent_time = (TextView) convertView.findViewById(R.id.text_message_time_sent);
         TextView message_received = (TextView) convertView.findViewById(R.id.text_message_body);
         TextView message_received_time = (TextView) convertView.findViewById(R.id.text_message_time_received);
+
 
         // Populate markup data
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
