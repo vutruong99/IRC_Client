@@ -97,6 +97,8 @@ public class LogsAdapter extends ArrayAdapter<String> {
 
         // Populate markup data
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Log.i("ỬOD", "getView: "+ str);
+
             Log.i("HTML", "getView: " + (java.lang.String) item);
             if(fromUser) {
                 message_sent.setText(str);
@@ -111,6 +113,7 @@ public class LogsAdapter extends ArrayAdapter<String> {
             Log.i("HTML", "getView: After removing HTML Tags: " + str);
         }
         else {
+            Log.i("ỬOD", "getView: "+ str);
             if(fromUser) {
                 message_sent.setText(str);
                 message_sent_time.setText(time);

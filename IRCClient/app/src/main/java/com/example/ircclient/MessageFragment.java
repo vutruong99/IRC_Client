@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,6 +27,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import static java.nio.charset.StandardCharsets.UTF_16;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 
 /**
@@ -88,7 +95,7 @@ public class MessageFragment extends Fragment {
                 strTime = dateFormat.format(currentTime);
 
                 // parseIn = translate text input to send
-                parseIn(chatBox.getText().toString() + "``<<time>>"+ strTime + "``",bundle.getString("channel"));
+                parseIn(chatBox.getText().toString() ,bundle.getString("channel"));
                 chatBox.getText().clear();
 
 
@@ -161,13 +168,19 @@ public class MessageFragment extends Fragment {
 
     // PRIVMSG = Command to send message in IRC
     private void privmsg(String channel, String message) {
-        connection.send("PRIVMSG "+ channel + " :" + message + "received");
+        Date currentTime_ = Calendar.getInstance().getTime();
+        DateFormat dateFormat_ = new SimpleDateFormat("hh:mm");
+        String strTime_ = dateFormat_.format(currentTime_);
+        connection.send("PRIVMSG "+ channel + " :" + message);
+//        "``<<time>>"+ strTime_ + "``"
+
         //Format the thing
 //        log(String.format("<font color=\"#FF4500\">%s</font>: " +
 //                "<font color=\"#FF4500\">&lt;</font>" +
 //                "%s<font color=\"#FF4500\">&gt;</font> " +
 //                "%s", channel, connection.nick, message));
-        log("fromuser "+channel + ": " + connection.nick+ " " +message );
+
+        log("fromuser "+channel + ": " + connection.nick+ " " +message + "``<<time>>"+ strTime_ + "``" );
     }
 
     public void join(String channel) {
@@ -186,6 +199,9 @@ public class MessageFragment extends Fragment {
         String param;
         String text;
         String tmp[];
+        Date currentTime = Calendar.getInstance().getTime();
+        DateFormat dateFormat = new SimpleDateFormat("hh:mm");
+
 
         if (command.isEmpty())
 
@@ -216,17 +232,33 @@ public class MessageFragment extends Fragment {
             return;
         if (command.equals("PING")) {}
 
-        else if (command.equals("PRIVMSG"))
+        else if (command.equals("PRIVMSG")) {
 //            log(String.format("<font color=\"#A500A5\">%s</font>: " +
 //                    "<font color=\"#009c00\">&lt;</font>" +
 //                    "%s<font color=\"#009c00\">&gt;</font> " +
 //                    "%s", param, user, text));
-            log(param+ user + text);
+            strTime = dateFormat.format(currentTime);
+            Log.i("Parse", "parseSrv: "+ text);
+//
+            byte[] ptext = text.getBytes(ISO_8859_1);
+            String value = new String(ptext, UTF_8);
+//            byte[] byteText = text.getBytes(Charset.forName("UTF-8"));
+            //To get original string from byte.
+//            String value="";
+//            try {
+//                value= new String(byteText , "UTF-8");
+//            } catch (UnsupportedEncodingException e) {
+//                e.printStackTrace();
+//            }
+            Log.i("Converted", "parseSrv: "+ value);
+            log(param + user + value+  "ê "+"``<<time>>"+ strTime + "``" + "received" );
+        }
         else if (command.equals("JOIN")) {
             param = !param.isEmpty() ? param : text;
             if (user.equals(connection.nick)) {
                 send.setEnabled(true);
                 log("You have joined channel " + param);
+                log("You have joined channel " + param );
                 //this.channel = param;
                 adapter2.add(param);
                 adapter2.notifyDataSetChanged();
