@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -33,6 +34,7 @@ public class MessageFragment extends Fragment {
     Connection connection;
     MessageAdapter adapter;
     String strTime;
+    Button send;
     private ArrayAdapter<String> adapter2;
     private ListView logs;
     private List<String> items =new ArrayList<>();
@@ -48,17 +50,18 @@ public class MessageFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_message, container, false);
 
-        //ListView listView = (ListView) v.findViewById(R.id.message_container); //Get list view
+        //ListView listView = (ListView) v.findViewById(R.id.message_container);
 
         //listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL); //Make list view scrolls everytime we type
         //listView.setStackFromBottom(true);
 
         final ArrayList<Message> list = new ArrayList<>();
 
-        Button send = (Button) v.findViewById(R.id.button_chatbox_send); //The send button
+        send = (Button) v.findViewById(R.id.button_chatbox_send); //The send button
+        send.setEnabled(false);
         final EditText chatBox = (EditText) v.findViewById(R.id.edittext_chatbox); //The chat box
 
-        adapter = new MessageAdapter(getActivity(), R.layout.item_message_sent, list);
+        //adapter = new MessageAdapter(getActivity(), R.layout.item_message_sent, list);
 
         // logs = a list view of what we see from server + messages
         logs = (ListView) v.findViewById(R.id.message_container);
@@ -101,7 +104,7 @@ public class MessageFragment extends Fragment {
                 list.add(message);
 
                 //Refreshes the view immediately
-                adapter.notifyDataSetChanged();*/
+                adapter.notifyDataSetChanged(); */
             }
         });
 
@@ -134,28 +137,47 @@ public class MessageFragment extends Fragment {
         // If normal message, send to channel
         if (message.charAt(0) != '/') {
             privmsg(channel, message);
-            return;
             // Or if message starts with /msg...
         } else if (message.startsWith("/msg")) {
             tmp = message.split(" ", 3);
             if (tmp.length >= 3)
                 privmsg(tmp[1], tmp[2]);
-            return;
+            // if message starts with /join
+        } else if (message.startsWith("/join")) {
+            tmp = message.split(" ", 3);
+            join(tmp[1]);
+        } else if (message.startsWith("/list")) {
+            connection.send("LIST " + channel );
+        } else if (message.startsWith("/name")) {
+            connection.send("NAMES " + channel);
+
+        } else if (message.startsWith("/part")) {
+            tmp = message.split(" ", 2);
+
         } else {
-            return;
+            log(message);
         }
     }
 
     // PRIVMSG = Command to send message in IRC
     private void privmsg(String channel, String message) {
         connection.send("PRIVMSG "+ channel + " :" + message + "received");
-
         //Format the thing
 //        log(String.format("<font color=\"#FF4500\">%s</font>: " +
 //                "<font color=\"#FF4500\">&lt;</font>" +
 //                "%s<font color=\"#FF4500\">&gt;</font> " +
 //                "%s", channel, connection.nick, message));
         log("fromuser "+channel + ": " + connection.nick+ " " +message );
+    }
+
+    public void join(String channel) {
+        if (!channel.isEmpty()) {
+            connection.send("JOIN " + channel);
+        }
+
+        else {
+            log("Unknown command");
+        }
     }
 
     private void parseSrv(String message) {
@@ -203,6 +225,7 @@ public class MessageFragment extends Fragment {
         else if (command.equals("JOIN")) {
             param = !param.isEmpty() ? param : text;
             if (user.equals(connection.nick)) {
+                send.setEnabled(true);
                 log("You have joined channel " + param);
                 //this.channel = param;
                 adapter2.add(param);
@@ -215,7 +238,7 @@ public class MessageFragment extends Fragment {
             }
         } else if (command.equals("NICK"))
             if (user.equals(connection.nick)) {
-               log("You are now known as " + text);
+               log("Your nick name is now " + text);
                 //((EditText) findViewById(R.id.message)).setHint(text);
                 connection.nick = text;
             } else {
@@ -234,6 +257,9 @@ public class MessageFragment extends Fragment {
             } else {
                 log(user + " has left channel " + param);
             }
+        else if (command.equals("LIST")) {
+            log(param + text);
+        }
         else if (command.equals("QUIT"))
             ;
         else if (command.equals("TOPIC"))

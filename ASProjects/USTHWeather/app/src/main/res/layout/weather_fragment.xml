@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/weather_fragment"
+    tools:context=".WeatherFragment"
+    android:background="@drawable/frame">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5438 degrees\n Sunlike"
+        android:shadowColor="#000000"
+        android:shadowDx="1.5"
+        android:shadowDy="1.3"
+        android:shadowRadius="1.6"
+        android:layout_alignParentLeft="true"
+        android:paddingLeft="10px"
+        android:paddingTop="10px"
+        android:textSize="50px"
+        />
+
+    <ImageView
+        android:id="@+id/main_weather"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:shadowColor="#000000"
+        android:shadowDx="1.5"
+        android:shadowDy="1.3"
+        android:shadowRadius="1.6"
+        android:paddingRight="10px"
+        android:paddingTop="10px"
+        android:layout_alignParentRight="true"
+        android:text="Toronto"
+        android:textSize="50px" />
+
+</RelativeLayout>

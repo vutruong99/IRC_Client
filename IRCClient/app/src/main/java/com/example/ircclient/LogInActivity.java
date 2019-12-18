@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class LogInActivity extends AppCompatActivity {
 
@@ -28,82 +29,31 @@ public class LogInActivity extends AppCompatActivity {
         final EditText etChannel = (EditText) findViewById(R.id.etChannel);
 
         final Button startButton = (Button) findViewById(R.id.startButton);
+        startButton.setEnabled(true);
 
-        etNick.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if(s.toString().trim().length()==0){
-                    startButton.setEnabled(false);
-                } else {
-                    startButton.setEnabled(true);
+
+            startButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String nick = etNick.getText().toString();
+                    String channel = etChannel.getText().toString();
+                    Intent intent = new Intent(LogInActivity.this, MainActivity.class);
+                    intent.putExtra("nick", nick);
+                    intent.putExtra("channel", channel);
+
+                    if (!nick.isEmpty() && !channel.isEmpty()) {
+                        startActivity(intent);
+                    }
+
+                    else {
+                        Toast.makeText(getApplicationContext(), "Please fill the log in form", Toast.LENGTH_LONG).show();
+                    }
+
                 }
-            }
+            });
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.toString().trim().length()==0){
-                    startButton.setEnabled(false);
-                } else {
-                    startButton.setEnabled(true);
-                }
-            }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(s.toString().trim().length()==0){
-                    startButton.setEnabled(false);
-                } else {
-                    startButton.setEnabled(true);
-                }
-            }
-        });
 
-        etChannel.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if(s.toString().trim().length()==0){
-                    startButton.setEnabled(false);
-                } else {
-                    startButton.setEnabled(true);
-                }
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.toString().trim().length()==0){
-                    startButton.setEnabled(false);
-                } else {
-                    startButton.setEnabled(true);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(s.toString().trim().length()==0){
-                    startButton.setEnabled(false);
-                } else {
-                    startButton.setEnabled(true);
-                }
-            }
-        });
-
-        if (isEmpty(etNick) || isEmpty(etChannel)) {
-            startButton.setEnabled(false);
-        } else {
-            startButton.setEnabled(true);
-        }
-
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nick = etNick.getText().toString();
-                String channel = etChannel.getText().toString();
-                Intent intent = new Intent(LogInActivity.this, MainActivity.class);
-                intent.putExtra("nick", nick);
-                intent.putExtra("channel", channel);
-                startActivity(intent);
-            }
-        });
     }
 
     private boolean isEmpty(EditText etText) {

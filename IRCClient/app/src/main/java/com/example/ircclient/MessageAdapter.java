@@ -11,7 +11,11 @@ import java.util.ArrayList;
 import java.util.Dictionary;
 
 public class MessageAdapter extends ArrayAdapter<Message> {
-    private static final String TAG = "DictAdapter";
+
+    private static class ViewHolder {
+        TextView name;
+        TextView home;
+    }
 
     private Context mContext;
     int mResource;

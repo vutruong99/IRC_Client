@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Météo de USTH</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="default_image_description">DEFAULT DESCRIPTION</string>
+
+    <!-- Names of cities -->
+    <string name="Hanoi">Hanoi</string>
+    <string name="Stockholm">Stockholm</string>
+    <string name="Moscow">Moscow</string>
+
+    <!--Days of the week -->
+    <string name="Mon">Lundi</string>
+    <string name="Tue">Mardi</string>
+    <string name="Wed">Mercredi</string>
+    <string name="Thu">Jeudi</string>
+    <string name="Fri">Vendredi</string>
+    <string name="Sat">Samedi</string>
+    <string name="Sun">Dimanche</string>
+
+    <!-- Weather -->
+    <string name="Freezing">Froid</string>
+    <string name="Sunlike">Beau</string>
+    <string name="Toohawt">Chaud</string>
+    <string name="Humid">Humid</string>
+    <string name="Stormy">Tempête</string>
+    <string name="Windy">Vent</string>
+    <string name="Dry">Sec</string>
+
+</resources>
