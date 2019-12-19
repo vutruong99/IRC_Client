@@ -1,7 +1,0 @@
-<resources>
-    <string name="app_name">ApplicationExample</string>
-    <color name="black">#000000</color>
-    <string name="textView1">Application Context</string>
-    <string name="textView2">Activity Context</string>
-    <string name="title_activity_main2">Main2Activity</string>
-</resources>
