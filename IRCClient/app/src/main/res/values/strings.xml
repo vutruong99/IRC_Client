@@ -15,4 +15,23 @@
 
     <string name="message_hint">Enter message</string>
 
+    <string name="app_description"> IRC Mess is a IRC client written in Java by Android Studio.
+        This client uses the IRC protocol to send plain text message through sockets.
+        The application is adjusted visually to look like modern messaging tools.
+    </string>
+    <string name="version">Version</string>
+    <string name="_1_2">1.2</string>
+    <string name="release_date">Release date</string>
+    <string name="_19_december_2019">19 December 2019</string>
+    <string name="team_description">We are a group of university students in the University of Science and Technology of Hanoi
+        who have big dreams and little bugs in our projects. This is an application for out mobile application development project</string>
+    <string name="rfc_1459_rfc_2812">RFC 1459 / RFC 2812</string>
+    <string name="truong_si_thi_vu">Truong Si Thi Vu</string>
+    <string name="leader">Leader</string>
+    <string name="praise_oketola">Praise Oketola</string>
+    <string name="nguyen_trung_dung">Nguyen Trung Dung</string>
+    <string name="dinh_nhu_minh_phuong">Dinh Nhu Minh Phuong</string>
+    <string name="ta_duc_anh">Ta Duc Anh</string>
+    <string name="enjoy_chatting">Enjoy chatting!</string>
+
 </resources>
