@@ -7,7 +7,7 @@
     android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/discordBlack"
+    android:background="@color/white"
     tools:context=".MainActivity">
 
     <!--<TextView
@@ -28,11 +28,11 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            app:subtitleTextColor="@color/black"
-            app:titleTextColor="@color/black"
+            app:subtitleTextColor="@color/white"
+            app:titleTextColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/lightGrey"
+            android:background="#0084FF"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:layout_constraintBottom_toTopOf="@id/layout_for_fragments"
@@ -57,10 +57,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/discordBlack"
+        android:background="@color/white"
         app:headerLayout="@layout/drawer_header_left"
-        app:itemIconTint="@color/lightGrey"
-        app:itemTextColor="@color/lightGrey"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black"
         app:menu="@menu/drawer_menu_left">
 
     </android.support.design.widget.NavigationView>

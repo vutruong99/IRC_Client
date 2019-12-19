@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ChannelFragment"
-    android:background="@color/discordLightBlack"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
@@ -13,8 +13,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_margin="10dp"
-        android:paddingTop="8px"
-        android:paddingBottom="8px">
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
 
         <ImageView
             android:layout_weight="1"
@@ -33,7 +33,7 @@
             android:shadowDy="1.3"
             android:shadowRadius="1.6"
             android:text="Mobile App Development \n 53 members"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textSize="20sp" />
 
     </LinearLayout>
@@ -42,9 +42,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="8px"
+        android:paddingTop="8dp"
         android:layout_margin="10dp"
-        android:paddingBottom="8px">
+        android:paddingBottom="8dp">
 
         <ImageView
             android:layout_weight="1"
@@ -62,8 +62,8 @@
             android:shadowDx="1.5"
             android:shadowDy="1.3"
             android:shadowRadius="1.6"
-            android:text="League of Legends \n 549854 members"
-            android:textColor="@android:color/white"
+            android:text="@string/league_of_legends_n_549854_members"
+            android:textColor="@android:color/black"
             android:textSize="50px" />
 
 
@@ -74,8 +74,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_margin="10dp"
-        android:paddingTop="8px"
-        android:paddingBottom="8px">
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
 
         <ImageView
             android:layout_weight="1"
@@ -94,7 +94,7 @@
             android:shadowDy="1.3"
             android:shadowRadius="1.6"
             android:text="Dota 2 Pro group \n 10 members"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textSize="50px" />
 
     </LinearLayout>
@@ -104,8 +104,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_margin="10dp"
-        android:paddingTop="8px"
-        android:paddingBottom="8px">
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
 
         <ImageView
             android:layout_weight="1"
@@ -123,8 +123,8 @@
             android:shadowDx="1.5"
             android:shadowDy="1.3"
             android:shadowRadius="1.6"
-            android:text="Travian by Doctor Son and students \n 12 members"
-            android:textColor="@android:color/white"
+            android:text="@string/travian_by_doctor_son_and_students_n_12_members"
+            android:textColor="@android:color/black"
             android:textSize="50px" />
 
 
@@ -135,8 +135,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_margin="10dp"
-        android:paddingTop="8px"
-        android:paddingBottom="8px">
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
 
         <ImageView
             android:layout_weight="1"
@@ -154,8 +154,8 @@
             android:shadowDx="1.5"
             android:shadowDy="1.3"
             android:shadowRadius="1.6"
-            android:text="Counter Strike Boiz \n 69 members"
-            android:textColor="@android:color/white"
+            android:text="@string/counter_strike_boiz_n_69_members"
+            android:textColor="@android:color/black"
             android:textSize="50px" />
 
     </LinearLayout>

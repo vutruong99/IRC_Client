@@ -3,18 +3,18 @@
 
     <item
         android:id="@+id/channels"
-        android:title="Channels"
+        android:title="@string/channels"
         android:icon="@drawable/ic_menu" />
     <item
         android:id="@+id/settings"
-        android:title="Settings"
+        android:title="@string/settings"
         android:icon="@drawable/ic_event"/>
     <item
         android:id="@+id/about"
-        android:title="About"
+        android:title="@string/about"
         android:icon="@drawable/ic_settings"/>
     <item
         android:id="@+id/logout"
-        android:title="Logout"
+        android:title="@string/logout"
         android:icon="@drawable/ic_logout"/>
 </menu>

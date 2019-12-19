@@ -33,5 +33,20 @@
     <string name="dinh_nhu_minh_phuong">Dinh Nhu Minh Phuong</string>
     <string name="ta_duc_anh">Ta Duc Anh</string>
     <string name="enjoy_chatting">Enjoy chatting!</string>
+    <string name="the_app">The App</string>
+    <string name="this_is_the_setting_fragment">THIS IS THE SETTING FRAGMENT</string>
+    <string name="john_doe">John Doe</string>
+    <string name="hi_man_how_are_you">hi man, how are you?</string>
+    <string name="channel_3">Channel 3</string>
+    <string name="channel_2">Channel 2</string>
+    <string name="channel_1">Channel 1</string>
+    <string name="search">Search</string>
+    <string name="league_of_legends_n_549854_members">League of Legends   549854 members</string>
+    <string name="travian_by_doctor_son_and_students_n_12_members">Travian by Doctor Son and students   12 members</string>
+    <string name="counter_strike_boiz_n_69_members">Counter Strike Boiz   69 members</string>
+    <string name="about">About</string>
+    <string name="settings">Settings</string>
+    <string name="channels">Channels</string>
+    <string name="logout">Logout</string>
 
 </resources>

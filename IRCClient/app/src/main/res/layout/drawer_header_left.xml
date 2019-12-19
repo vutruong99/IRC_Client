@@ -4,17 +4,17 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    android:background="@color/lightGrey"
+    android:background="#0084FF"
     android:padding="20dp" >
     <ImageView
         android:src="@drawable/discord"
-        android:layout_width="75dp"
-        android:layout_height="75dp" />
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
     <TextView
         android:id="@+id/username_navbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
+        android:textSize="40sp"
         android:textColor="@color/black"
         android:layout_marginTop="5dp"/>
     <TextView

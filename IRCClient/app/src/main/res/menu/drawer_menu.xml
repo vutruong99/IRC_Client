@@ -6,7 +6,7 @@
 
     <item android:id="@+id/search"
         android:icon="@drawable/ic_search"
-        android:title="Search"
+        android:title="@string/search"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="android.support.v7.widget.SearchView">
 
@@ -14,21 +14,21 @@
 
     <item android:id="@+id/channel1"
         android:icon="@drawable/ic_chat_black_24dp"
-        android:title="Channel 1"
+        android:title="@string/channel_1"
         app:showAsAction="never">
 
     </item>
 
     <item android:id="@+id/channel2"
         android:icon="@drawable/ic_chat_black_24dp"
-        android:title="Channel 2"
+        android:title="@string/channel_2"
         app:showAsAction="never">
 
     </item>
 
     <item android:id="@+id/channel3"
         android:icon="@drawable/ic_chat_black_24dp"
-        android:title="Channel 3"
+        android:title="@string/channel_3"
         app:showAsAction="never">
 
     </item>
