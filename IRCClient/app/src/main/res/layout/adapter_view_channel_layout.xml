@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="100">
+
+    <TextView
+        android:layout_width="0dp"
+        android:gravity="center"
+        android:layout_height="60dp"
+        android:text="Channel Name"
+        android:textSize="40sp"
+        android:textColor="@color/black"
+        android:id="@+id/channelName"
+        android:layout_weight="50">
+    </TextView>
+
+    <TextView
+        android:layout_width="0dp"
+        android:gravity="center"
+        android:layout_height="60dp"
+        android:text="Description"
+        android:textSize="40sp"
+        android:textColor="@color/black"
+        android:id="@+id/channelDescription"
+        android:layout_weight="50">
+    </TextView>
+
+
+</LinearLayout>
