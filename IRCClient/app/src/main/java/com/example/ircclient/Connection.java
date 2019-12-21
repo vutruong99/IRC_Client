@@ -16,10 +16,10 @@ import java.util.Scanner;
 
 public class Connection {
 
-    String host = "irc.freenode.net";
+    public String host = "irc.freenode.net";
     int port = 6667;
-    String nick;
-    String channel;
+    public String nick;
+    public String channel;
     String realname;
     String username;
 

@@ -56,18 +56,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Call MessageFragment by default
         MessageFragment messageFragment = new MessageFragment();
 
+        ChannelFragment channelFragment = new ChannelFragment();
+
         // Create a bundle to pass arguments to the fragment
         Bundle bundle = new Bundle();
         bundle.putString("nick", nick);
         bundle.putString("channel", channel);
-        messageFragment.setArguments(bundle);
+        //messageFragment.setArguments(bundle);
 
+        channelFragment.setArguments(bundle);
         // Start asynchronous task in fragment
-        messageFragment.startConnect();
+        //messageFragment.startConnect();
 
         //Show the fragment
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.layout_for_fragments, messageFragment, "Message Fragment");
+        fragmentTransaction.replace(R.id.layout_for_fragments, channelFragment, "Channel Fragment");
         fragmentTransaction.commit();
 
 

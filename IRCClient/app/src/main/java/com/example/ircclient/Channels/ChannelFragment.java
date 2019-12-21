@@ -23,6 +23,8 @@ import java.util.ArrayList;
 public class ChannelFragment extends Fragment {
 
     ChannelListAdapter adapter;
+    ListView channelListView;
+    ArrayList<Channel> channelList;
 
     public ChannelFragment() {
         // Required empty public constructor
@@ -35,7 +37,13 @@ public class ChannelFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_channel, container, false);
 
-        ListView channelListView = v.findViewById(R.id.channelListView);
+        // When we call the Channel fragment from the drawer, it crashes because there is no bundle,
+        // If I set bundle != null then it will show a blank list
+        Bundle bundle = getArguments();
+        String nick = bundle.getString("nick");
+        String channel = bundle.getString("channel");
+
+        channelListView = v.findViewById(R.id.channelListView);
 
         Channel channel1 = new Channel("#hehe", "20 peoople");
         Channel channel2 = new Channel("#havefun", "35 peoople");
@@ -43,12 +51,8 @@ public class ChannelFragment extends Fragment {
         Channel channel4 = new Channel("#t3oasd", "43 peoople");
         Channel channel5 = new Channel("#osdj", "0 peoople");
 
-        ArrayList<Channel> channelList = new ArrayList<>();
-        channelList.add(channel1);
-        channelList.add(channel2);
-        channelList.add(channel3);
-        channelList.add(channel4);
-        channelList.add(channel5);
+        channelList = new ArrayList<>();
+        channelList.add(new Channel(bundle.getString("channel"), "0 people"));
 
         adapter = new ChannelListAdapter(getActivity(), R.layout.adapter_view_channel_layout, channelList);
         channelListView.setAdapter(adapter);
@@ -61,8 +65,8 @@ public class ChannelFragment extends Fragment {
 
                 Intent intent = new Intent(getContext(),SingleChannelActivity.class);
                 //based on item add info to intent
-                intent.putExtra("name", item.getChannelName());
-                intent.putExtra("channel", item.getChannelName());
+                intent.putExtra("nick",nick);
+                intent.putExtra("channel",channel);
                 startActivity(intent);
                 Toast.makeText(getContext(),"LMAO",Toast.LENGTH_LONG).show();
             }
@@ -70,6 +74,10 @@ public class ChannelFragment extends Fragment {
 
 
         return v;
+    }
+
+    public void addChannel(String channel) {
+        channelList.add(new Channel(channel, "0 people"));
     }
 
 }
