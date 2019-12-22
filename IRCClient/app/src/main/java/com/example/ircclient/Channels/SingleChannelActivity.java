@@ -139,6 +139,9 @@ public class SingleChannelActivity extends AppCompatActivity {
     public void join(String channel) {
         if (!channel.isEmpty()) {
             connection.send("JOIN " + channel);
+
+            ChannelFragment channelFragment = new ChannelFragment();
+            channelFragment.addChannel(channel);
         }
 
         else {

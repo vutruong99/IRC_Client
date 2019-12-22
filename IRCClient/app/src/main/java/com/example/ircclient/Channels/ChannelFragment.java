@@ -3,12 +3,15 @@ package com.example.ircclient.Channels;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,9 +25,13 @@ import java.util.ArrayList;
  */
 public class ChannelFragment extends Fragment {
 
+    ArrayList<Channel> channelList = new ArrayList<>();
     ChannelListAdapter adapter;
     ListView channelListView;
-    ArrayList<Channel> channelList;
+
+    String channel;
+    String nick;
+
 
     public ChannelFragment() {
         // Required empty public constructor
@@ -37,22 +44,25 @@ public class ChannelFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_channel, container, false);
 
+
+        return v;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        channelList = new ArrayList<>();
         // When we call the Channel fragment from the drawer, it crashes because there is no bundle,
         // If I set bundle != null then it will show a blank list
         Bundle bundle = getArguments();
-        String nick = bundle.getString("nick");
-        String channel = bundle.getString("channel");
+        if (bundle != null) {
+            nick = bundle.getString("nick");
+            channel = bundle.getString("channel");
+        }
 
-        channelListView = v.findViewById(R.id.channelListView);
+        channelListView = getView().findViewById(R.id.channelListView);
 
-        Channel channel1 = new Channel("#hehe", "20 peoople");
-        Channel channel2 = new Channel("#havefun", "35 peoople");
-        Channel channel3 = new Channel("#ggibhc", "67 peoople");
-        Channel channel4 = new Channel("#t3oasd", "43 peoople");
-        Channel channel5 = new Channel("#osdj", "0 peoople");
-
-        channelList = new ArrayList<>();
-        channelList.add(new Channel(bundle.getString("channel"), "0 people"));
+        channelList.add(new Channel(channel, "0 people"));
 
         adapter = new ChannelListAdapter(getActivity(), R.layout.adapter_view_channel_layout, channelList);
         channelListView.setAdapter(adapter);
@@ -66,18 +76,26 @@ public class ChannelFragment extends Fragment {
                 Intent intent = new Intent(getContext(),SingleChannelActivity.class);
                 //based on item add info to intent
                 intent.putExtra("nick",nick);
-                intent.putExtra("channel",channel);
+                intent.putExtra("channel",item.getChannelName());
                 startActivity(intent);
                 Toast.makeText(getContext(),"LMAO",Toast.LENGTH_LONG).show();
             }
         });
 
+        Button addChannel = getView().findViewById(R.id.addChannel);
+        addChannel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addChannel("#hoduw");
+            }
+        });
 
-        return v;
+
+
     }
 
     public void addChannel(String channel) {
         channelList.add(new Channel(channel, "0 people"));
+        adapter.notifyDataSetChanged();
     }
-
 }
