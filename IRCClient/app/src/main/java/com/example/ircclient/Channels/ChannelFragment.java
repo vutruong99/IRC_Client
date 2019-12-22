@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.ircclient.MessageFragment;
 import com.example.ircclient.R;
 
 import java.util.ArrayList;
@@ -72,13 +73,18 @@ public class ChannelFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
                 Channel item = adapter.getItem(position);
-
-                Intent intent = new Intent(getContext(),SingleChannelActivity.class);
+                Bundle messageBundle = new Bundle();
+                messageBundle.putString("nick",nick);
+                messageBundle.putString("channel",item.getChannelName());
+                MessageFragment messageFragment = new MessageFragment();
+                messageFragment.setArguments(messageBundle);
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.layout_for_fragments, messageFragment, "MessageF").commit();
+                /*Intent intent = new Intent(getContext(),SingleChannelActivity.class);
                 //based on item add info to intent
                 intent.putExtra("nick",nick);
                 intent.putExtra("channel",item.getChannelName());
                 startActivity(intent);
-                Toast.makeText(getContext(),"LMAO",Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),"LMAO",Toast.LENGTH_LONG).show();*/
             }
         });
 

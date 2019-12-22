@@ -37,6 +37,18 @@ public class SingleChannelActivity extends AppCompatActivity {
     private List<String> items =new ArrayList<>();
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        Intent intent = getIntent();
+
+        String channel = intent.getStringExtra("channel");
+        String nick = intent.getStringExtra("nick");
+
+
+        new ConnectTask().execute("irc.freenode.net", "6667", nick, channel);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_channel);
