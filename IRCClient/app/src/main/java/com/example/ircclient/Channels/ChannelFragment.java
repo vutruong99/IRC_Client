@@ -22,6 +22,8 @@ import com.example.ircclient.R;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 
 
 /**
@@ -30,11 +32,14 @@ import java.util.ArrayList;
 public class ChannelFragment extends Fragment {
 
     ArrayList<Channel> channelList = new ArrayList<>();
+//    ArrayList<SingleChannelFragement> singleChannelFragement_list = new ArrayList<>();
     ChannelListAdapter adapter;
     ListView channelListView;
-    boolean firstime = true;
     String channel;
     String nick;
+    Boolean[] firstTime= new Boolean[20];
+    int firstTime_counter = 0;
+    SingleChannelFragement singleChannelFragement;
 
 
     public ChannelFragment() {
@@ -47,6 +52,9 @@ public class ChannelFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable("list", (Serializable) channelList);
+        outState.putSerializable("fistTime", (Serializable) firstTime);
+//        outState.putSerializable("listF", (Serializable) singleChannelFragement_list);
+        outState.putInt("firstTime_counter", firstTime_counter);
     }
 
     @Override
@@ -58,6 +66,11 @@ public class ChannelFragment extends Fragment {
             channel = bundle.getString("channel");
         }
         channelList.add(new Channel(channel, "0 people"));
+        firstTime[firstTime_counter] = true;
+        firstTime_counter++;
+//        SingleChannelFragement singleChannelFragement= new SingleChannelFragement();
+//        singleChannelFragement_list.add(singleChannelFragement);
+
     }
 
     @Override
@@ -72,9 +85,15 @@ public class ChannelFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         if(savedInstanceState != null){
             channelList = (ArrayList<Channel>) savedInstanceState.getSerializable("list");
+//            singleChannelFragement_list = (ArrayList<SingleChannelFragement>) savedInstanceState.getSerializable("listF");
+            firstTime = (Boolean[]) savedInstanceState.getSerializable("firstTime");
+            firstTime_counter =  savedInstanceState.getInt("firstTime_counter");
         }
+
+        Log.i("counter", "onViewCreated: first_counter"+ firstTime_counter);
 
             // When we call the Channel fragment from the drawer, it crashes because there is no bundle,
             // If I set bundle != null then it will show a blank list
@@ -91,6 +110,8 @@ public class ChannelFragment extends Fragment {
             channelListView.setAdapter(adapter);
 
             channelListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position,
                                         long id) {
@@ -101,24 +122,45 @@ public class ChannelFragment extends Fragment {
 //                intent.putExtra("nick",nick);
 //                intent.putExtra("channel",item.getChannelName());
 //                startActivity(intent);
-                  SingleChannelFragement singleChannelFragement;
-//                    if (firstime) {
-                        singleChannelFragement = new SingleChannelFragement();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("nick", nick);
-                        bundle.putString("channel", channel);
-                        singleChannelFragement.setArguments(bundle);
+                    Log.i("First value is:", "onItemClick: "+firstTime[position]);
+                    Log.i("position is:", "onViewCreated:" + position);
 
-                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.layout_for_fragments, singleChannelFragement, "Single Channel Fragment");
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
+                    if(firstTime[position]){
+                      firstTime[position] = false;
+//                    SingleChannelFragement singleChannelFragement;
 
-//                        firstime = false;
-//                    }
+                    singleChannelFragement = new SingleChannelFragement();
+
+//                      SingleChannelFragement singleChannelFragement = singleChannelFragement_list.get(position);
+                      Bundle bundle = new Bundle();
+                      bundle.putString("nick", nick);
+//                      bundle.putString("channel", channel);
+                      bundle.putString("channel", item.getChannelName());
+                      bundle.putString("port", randomPort());
+                      singleChannelFragement.setArguments(bundle);
+
+                      FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                      fragmentTransaction.replace(R.id.layout_for_fragments, singleChannelFragement, "Single Channel Fragment");
+                      fragmentTransaction.addToBackStack(null);
+                      fragmentTransaction.commit();
+//
+                  }else {
+                      if( singleChannelFragement == null){
+                          Log.i("newchannel", "onItemClick: SingleChannelFragment was null");
+                      }else{
+                          Log.i("newchannel", "onItemClick: SingleChannelFragment is not null");
+
+                      }
+
+                      FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                      fragmentTransaction.replace(R.id.layout_for_fragments, singleChannelFragement, "Single Channel Fragment");
+                      fragmentTransaction.addToBackStack(null);
+                      fragmentTransaction.commit();
+                  }
 
 
-
+//                    firstTime_array[position] = false;
+//                    firstTime = new ArrayList<Boolean>(Arrays.asList(firstTime_array));
 
                     Toast.makeText(getContext(), "LMAO", Toast.LENGTH_LONG).show();
                 }
@@ -138,6 +180,10 @@ public class ChannelFragment extends Fragment {
 
     public void addChannel(String channel) {
         channelList.add(new Channel(channel, "0 people"));
+        firstTime[firstTime_counter] = true;
+        firstTime_counter++;
+//        SingleChannelFragement singleChannelFragement= new SingleChannelFragement();
+//        singleChannelFragement_list.add(singleChannelFragement);
         adapter.notifyDataSetChanged();
 
     }
@@ -153,6 +199,17 @@ public class ChannelFragment extends Fragment {
         super.onDestroy();
         Log.i("onDestroy ", "onDestroy: ChannelFragment");
 
+    }
+
+    public String randomPort(){
+        String[] arr={"6665", "6666", "6667", "8000"};
+        Random r=new Random();
+        int randomNumber=r. nextInt(arr. length);
+
+//        new ConnectTask().execute("irc.freenode.net",], nick, channel);
+        String port = arr[r.nextInt(arr.length)];
+
+        return port;
     }
 
 }

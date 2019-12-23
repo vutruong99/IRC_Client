@@ -46,6 +46,10 @@ public class SingleChannelFragement extends Fragment {
 
     private ListView logs;
     private List<String> items =new ArrayList<>();
+    String channel;
+    String nick;
+    String port;
+    ConnectTask myTask;
 
     public SingleChannelFragement() {
         // Required empty public constructor
@@ -91,10 +95,15 @@ public class SingleChannelFragement extends Fragment {
             Log.i("Recovered Con", "onViewCreated: " + connection.nick);
         }
         Bundle bundle = getArguments();
-        String channel = bundle.getString("channel");
-        String nick = bundle.getString("nick");
+        channel = bundle.getString("channel");
+         nick = bundle.getString("nick");
+         port =  bundle.getString("port");
 
-        setTimeout(() -> new ConnectTask().execute("irc.freenode.net", "6667", nick, channel), 5000);
+//        setTimeout(() -> new ConnectTask().execute("irc.freenode.net", "6667", nick, channel), 5000);
+        myTask = new ConnectTask();
+        myTask.execute("irc.freenode.net",port, nick, channel);
+
+//        setTimeout(() -> , 5000);
 
 
         if(connection == null){
@@ -339,6 +348,7 @@ public class SingleChannelFragement extends Fragment {
 
             try {
                 Log.i("Connection", "doInBackground:  Task Starting");
+                Log.i("connection", "doInBackground: Trying to connect with " + nick+ channel + "on port " + port);
 
                 connection.start();
                 Log.i("Connection ", "doInBackground: Task done");
@@ -371,7 +381,7 @@ public class SingleChannelFragement extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
+//        myTask.cancel(true);
         Log.i("onDestroy", "onDestroy: ");
 
     }
