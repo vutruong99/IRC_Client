@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".Channels.ChannelFragment"
     android:background="@color/white"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:tag="Channel Fragment"
+    >
 
     <ListView
         android:layout_width="match_parent"

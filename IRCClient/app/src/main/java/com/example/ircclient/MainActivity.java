@@ -8,6 +8,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private RelativeLayout layout;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
+    ChannelFragment channelFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,22 +59,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Call MessageFragment by default
         MessageFragment messageFragment = new MessageFragment();
 
-        ChannelFragment channelFragment = new ChannelFragment();
-
-        // Create a bundle to pass arguments to the fragment
-        Bundle bundle = new Bundle();
-        bundle.putString("nick", nick);
-        bundle.putString("channel", channel);
-        //messageFragment.setArguments(bundle);
-
-        channelFragment.setArguments(bundle);
         // Start asynchronous task in fragment
         //messageFragment.startConnect();
+//        if (savedInstanceState == null) {
+            channelFragment = new ChannelFragment();
 
-        //Show the fragment
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.layout_for_fragments, channelFragment, "Channel Fragment");
-        fragmentTransaction.commit();
+            // Create a bundle to pass arguments to the fragment
+            Bundle bundle = new Bundle();
+            bundle.putString("nick", nick);
+            bundle.putString("channel", channel);
+            //messageFragment.setArguments(bundle);
+
+            channelFragment.setArguments(bundle);
+            //Show the fragment
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.layout_for_fragments, channelFragment, "Channel Fragment");
+            fragmentTransaction.addToBackStack(null);
+
+            fragmentTransaction.commit();
+//        } else {
+//            Log.i("Prev", "onCreate: Getting previous state");
+//            channelFragment = (ChannelFragment) getSupportFragmentManager()
+//                    .findFragmentByTag("Channel Fragment");
+//        }
+
+
 
 
     }
@@ -104,9 +116,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = menuItem.getItemId();
 
         if (id == R.id.channels) {
-            ChannelFragment channelFragment = new ChannelFragment();
+//            ChannelFragment channelFragment = new ChannelFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.layout_for_fragments, channelFragment, "Channel Fragment");
+            fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
 

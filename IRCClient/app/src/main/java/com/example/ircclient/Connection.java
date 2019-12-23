@@ -1,5 +1,7 @@
 package com.example.ircclient;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -14,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-public class Connection {
+public class Connection implements Parcelable {
 
     public String host = "irc.freenode.net";
     int port = 6667;
@@ -40,7 +42,30 @@ public class Connection {
         running = false;
     }
 
+    protected Connection(Parcel in) {
+        host = in.readString();
+        port = in.readInt();
+        nick = in.readString();
+        channel = in.readString();
+        realname = in.readString();
+        username = in.readString();
+        running = in.readByte() != 0;
+    }
+
+    public static final Creator<Connection> CREATOR = new Creator<Connection>() {
+        @Override
+        public Connection createFromParcel(Parcel in) {
+            return new Connection(in);
+        }
+
+        @Override
+        public Connection[] newArray(int size) {
+            return new Connection[size];
+        }
+    };
+
     public void start() throws IOException {
+        Log.i("Run connection", "onStartConnection: ");
         running = true;
 
         Socket socket = new Socket(host, port);
@@ -72,12 +97,36 @@ public class Connection {
         }
     }
 
+    public void listenMessage() throws IOException {
+        while (running) {
+            String message = in.readLine();
+            if (message != null)
+                listener.rcv(message);
+        }
+    }
     public void stop() {
+        Log.i("Stop connection", "onDestroyView: ");
         running = false;
     }
 
     public void send(String message) {
         out.println(message);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(host);
+        parcel.writeInt(port);
+        parcel.writeString(nick);
+        parcel.writeString(channel);
+        parcel.writeString(realname);
+        parcel.writeString(username);
+        parcel.writeByte((byte) (running ? 1 : 0));
     }
 
     public interface MessageCallback {
