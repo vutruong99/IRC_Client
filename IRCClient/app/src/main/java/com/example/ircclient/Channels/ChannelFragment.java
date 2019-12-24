@@ -32,7 +32,7 @@ import java.util.Random;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChannelFragment extends Fragment {
+public class ChannelFragment extends Fragment implements SingleChannelFragement.FragmentCallback {
 
     ArrayList<Channel> channelList = new ArrayList<>();
 //    ArrayList<SingleChannelFragement> singleChannelFragement_list = new ArrayList<>();
@@ -44,19 +44,28 @@ public class ChannelFragment extends Fragment {
     int firstTime_counter = 0;  // to get the index of the newly added channel in firstTime array
     SingleChannelFragement singleChannelFragement;
     int last_clicked_item_position; // get position id of the last item clicked in the listview
-    Connection connection;
+//    ArrayList<Connection> connectionList= new ArrayList<>();
+//    int currentPositon;
 
+    Connection connection;
+    ChannelFragment channelFragment = this;
 
     public ChannelFragment() {
         // Required empty public constructor
 
 
     }
+    @Override
+    public void onDataSent(String channel){
+        //Do something with your data
+        addChannel(channel);
+    }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable("list", (Serializable) channelList);
+//        outState.putSerializable("connectionList", (Serializable) connectionList);
         outState.putSerializable("fistTime", (Serializable) firstTime);
 //        outState.putSerializable("listF", (Serializable) singleChannelFragement_list);
         outState.putInt("firstTime_counter", firstTime_counter);
@@ -95,6 +104,7 @@ public class ChannelFragment extends Fragment {
 
         if(savedInstanceState != null){
             channelList = (ArrayList<Channel>) savedInstanceState.getSerializable("list");
+//            connectionList = (ArrayList<Connection>) savedInstanceState.getSerializable("connectionList");
 //            singleChannelFragement_list = (ArrayList<SingleChannelFragement>) savedInstanceState.getSerializable("listF");
             firstTime = (Boolean[]) savedInstanceState.getSerializable("firstTime");
             firstTime_counter =  savedInstanceState.getInt("firstTime_counter");
@@ -122,6 +132,7 @@ public class ChannelFragment extends Fragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position,
                                         long id) {
                     Channel item = adapter.getItem(position);
+//                    currentPositon = position;
 
 //                Intent intent = new Intent(getContext(),SingleChannelActivity.class);
 //                //based on item add info to intent
@@ -154,6 +165,8 @@ public class ChannelFragment extends Fragment {
 
 
                             singleChannelFragement = new SingleChannelFragement();
+                            singleChannelFragement.setFragmentCallback(channelFragment);
+
                             ConnectTask myTask = null;
                             myTask = new ConnectTask();
                             myTask.execute("irc.freenode.net","6667", nick, item.getChannelName());
@@ -180,6 +193,8 @@ public class ChannelFragment extends Fragment {
 
 
                         singleChannelFragement = new SingleChannelFragement();
+                        singleChannelFragement.setFragmentCallback(channelFragment);
+
                         ConnectTask myTask = null;
                         myTask = new ConnectTask();
                         myTask.execute("irc.freenode.net","6667", nick, item.getChannelName());
@@ -202,7 +217,7 @@ public class ChannelFragment extends Fragment {
                       }
 
                         Log.i("item", "onItemClick:item clicked has been clicked before"+ item.getChannelName());
-
+//                        singleChannelFragement.setConnection(connectionList.get(position));
                         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                       fragmentTransaction.replace(R.id.layout_for_fragments, singleChannelFragement, "Single Channel Fragment");
                       fragmentTransaction.addToBackStack(null);
@@ -267,10 +282,14 @@ public class ChannelFragment extends Fragment {
     }
 
 
+
     private class ConnectTask extends AsyncTask<String, String, Connection> {
 
         @Override
         protected Connection doInBackground(String... params) {
+//            connectionList.add(connection);
+
+//            connection = new Connection(params[0],
             connection = new Connection(params[0],
                     Integer.parseInt(params[1]),
                     params[2],
@@ -301,5 +320,6 @@ public class ChannelFragment extends Fragment {
             singleChannelFragement.parseSrv(values[0], connection);
         }
     }
+
 
 }

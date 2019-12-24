@@ -50,6 +50,12 @@ public class SingleChannelFragement extends Fragment {
     String nick;
     String port;
 //    ConnectTask myTask = null;
+    private FragmentCallback fragmentCallback;
+
+    public void setFragmentCallback(FragmentCallback callback) {
+        this.fragmentCallback = callback;
+    }
+
 
     public SingleChannelFragement() {
         // Required empty public constructor
@@ -217,8 +223,13 @@ public class SingleChannelFragement extends Fragment {
         if (!channel.isEmpty()) {
             connection.send("JOIN " + channel);
 
-            ChannelFragment channelFragment = new ChannelFragment();
-            channelFragment.addChannel(channel);
+//            ChannelFragment channelFragment = new ChannelFragment();
+//            View channelFragment = getLayoutInflater().inflate(R.layout.fragment_channel, container, false);
+
+//            channelFragment.addChannel(channel);
+            if(fragmentCallback != null){
+                fragmentCallback.onDataSent(channel);
+            }
         }
 
         else {
@@ -278,8 +289,9 @@ public class SingleChannelFragement extends Fragment {
         else if (command.equals("JOIN")) {
             param = !param.isEmpty() ? param : text;
             if (user.equals(connection.nick)) {
-                log("You have joined channel " + param);
-                log("You have joined channel " + param );
+                log("You have joined channel <strong>" +
+                        "<font color=\"#A500A5\">" + param + "</font></strong>");
+//                log("You have joined channel " + param );
                 //this.channel = param;
                 adapter2.add(param);
                 adapter2.notifyDataSetChanged();
@@ -406,6 +418,10 @@ public class SingleChannelFragement extends Fragment {
 
     }
 
+    public  void setConnection(Connection connection){
+        this.connection = connection;
+    }
+
 
     public static void setTimeout(Runnable runnable, int delay){
         new Thread(() -> {
@@ -418,6 +434,11 @@ public class SingleChannelFragement extends Fragment {
             }
         }).start();
     }
+
+    public interface FragmentCallback {
+        void onDataSent(String yourData);
+    }
+
 }
 
 
