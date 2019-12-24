@@ -3,6 +3,8 @@ package com.example.ircclient;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.util.Log;
@@ -62,16 +64,25 @@ public class MessageFragment extends Fragment {
         //listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL); //Make list view scrolls everytime we type
         //listView.setStackFromBottom(true);
 
+
+        return v;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        startConnect();
         final ArrayList<Message> list = new ArrayList<>();
 
-        send = (Button) v.findViewById(R.id.button_chatbox_send); //The send button
+        send = (Button) getView().findViewById(R.id.button_chatbox_send); //The send button
         send.setEnabled(false);
-        final EditText chatBox = (EditText) v.findViewById(R.id.edittext_chatbox); //The chat box
+        final EditText chatBox = (EditText) getView().findViewById(R.id.edittext_chatbox); //The chat box
 
         //adapter = new MessageAdapter(getActivity(), R.layout.item_message_sent, list);
 
         // logs = a list view of what we see from server + messages
-        logs = (ListView) v.findViewById(R.id.message_container);
+        logs = (ListView) getView().findViewById(R.id.message_container);
 //        adapter2 = new LogsAdapter<>(getActivity(),items);
         adapter2 = new LogsAdapter(getActivity(),items );
 
@@ -119,7 +130,6 @@ public class MessageFragment extends Fragment {
         //Set the view to the adapter
         //listView.setAdapter(adapter);
 
-        return v;
     }
 
     // Asynchronous task

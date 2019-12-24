@@ -66,6 +66,7 @@ public class Connection implements Parcelable {
     };
 
     public void start() throws IOException {
+        Log.i("Run connection", "onStartConnection: ");
         running = true;
 
         socket = new Socket(host, port);
@@ -97,6 +98,13 @@ public class Connection implements Parcelable {
         }
     }
 
+    public void listenMessage() throws IOException {
+        while (running) {
+            String message = in.readLine();
+            if (message != null)
+                listener.rcv(message);
+        }
+    }
     public void stop() {
         Log.i("Stop connection", "onDestroyView: ");
         running = false;

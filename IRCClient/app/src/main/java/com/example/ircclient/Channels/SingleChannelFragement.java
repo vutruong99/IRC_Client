@@ -101,6 +101,7 @@ public class SingleChannelFragement extends Fragment {
             Log.i("Recovered Con", "onViewCreated: " + connection.nick);
         }
         Bundle bundle = getArguments();
+
         channel = bundle.getString("channel");
          nick = bundle.getString("nick");
          port =  bundle.getString("port");
@@ -110,6 +111,8 @@ public class SingleChannelFragement extends Fragment {
 //        myTask.execute("irc.freenode.net",port, nick, channel);
 
 //        setTimeout(() -> , 5000);
+
+
 
 
         if(connection == null){
