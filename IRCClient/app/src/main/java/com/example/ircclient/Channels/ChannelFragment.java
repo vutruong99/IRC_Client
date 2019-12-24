@@ -2,6 +2,7 @@ package com.example.ircclient.Channels;
 
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,8 +19,10 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.ircclient.Connection;
 import com.example.ircclient.R;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,9 +40,11 @@ public class ChannelFragment extends Fragment {
     ListView channelListView;
     String channel;
     String nick;
-    Boolean[] firstTime= new Boolean[20];
-    int firstTime_counter = 0;
+    Boolean[] firstTime= new Boolean[20];   // boolean of arrays set to true for each channel
+    int firstTime_counter = 0;  // to get the index of the newly added channel in firstTime array
     SingleChannelFragement singleChannelFragement;
+    int last_clicked_item_position; // get position id of the last item clicked in the listview
+    Connection connection;
 
 
     public ChannelFragment() {
@@ -55,6 +60,7 @@ public class ChannelFragment extends Fragment {
         outState.putSerializable("fistTime", (Serializable) firstTime);
 //        outState.putSerializable("listF", (Serializable) singleChannelFragement_list);
         outState.putInt("firstTime_counter", firstTime_counter);
+        outState.putInt("last_clicked_item_position", last_clicked_item_position);
     }
 
     @Override
@@ -86,11 +92,13 @@ public class ChannelFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         if(savedInstanceState != null){
             channelList = (ArrayList<Channel>) savedInstanceState.getSerializable("list");
 //            singleChannelFragement_list = (ArrayList<SingleChannelFragement>) savedInstanceState.getSerializable("listF");
             firstTime = (Boolean[]) savedInstanceState.getSerializable("firstTime");
             firstTime_counter =  savedInstanceState.getInt("firstTime_counter");
+            last_clicked_item_position =  savedInstanceState.getInt("last_clicked_item_position");
         }
 
         Log.i("counter", "onViewCreated: first_counter"+ firstTime_counter);
@@ -110,8 +118,6 @@ public class ChannelFragment extends Fragment {
             channelListView.setAdapter(adapter);
 
             channelListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position,
                                         long id) {
@@ -124,19 +130,62 @@ public class ChannelFragment extends Fragment {
 //                startActivity(intent);
                     Log.i("First value is:", "onItemClick: "+firstTime[position]);
                     Log.i("position is:", "onViewCreated:" + position);
+                    /***
+                     * If user clicks a different channel from the one previously clicked
+                     *  - close connection
+                     *     if channel has been clicked previously
+                     *         - create a new connection
+                     *         - save instance of singleChannelFragment with connection
+                     *  If user clicks channel for the first time
+                     *      - create a new connection
+                     *      - save instance of singleChannelFragment with connection
+                     *  else if user just left that channel
+                     *      - load instance of that channel
+                     *
+                     */
+                    if(item != adapter.getItem(last_clicked_item_position) ){   // If user clicks a different channel from the one previously clicked
+                        Log.i("item", "onItemClick: Stopping Previous connection");
+                        connection.stop();
+                        if(firstTime[position] == false){   //  if channel has been clicked previously
+                            Bundle bundle = new Bundle();
+                            bundle.putString("nick", nick);
+                            bundle.putString("channel", item.getChannelName());
+                            bundle.putString("port", randomPort());
 
-                    if(firstTime[position]){
+
+                            singleChannelFragement = new SingleChannelFragement();
+                            ConnectTask myTask = null;
+                            myTask = new ConnectTask();
+                            myTask.execute("irc.freenode.net","6667", nick, item.getChannelName());
+
+
+                            singleChannelFragement.setArguments(bundle);
+
+                            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.layout_for_fragments, singleChannelFragement, "Single Channel Fragment");
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
+                        }
+
+                    }
+                    if(firstTime[position]){ // If user clicks channel for the first time
                       firstTime[position] = false;
 //                    SingleChannelFragement singleChannelFragement;
+                        Bundle bundle = new Bundle();
+                        bundle.putString("nick", nick);
+//                      bundle.putString("channel", channel);
+                        bundle.putString("channel", item.getChannelName());
+                        bundle.putString("port", randomPort());
+                        Log.i("item", "onItemClick:item clicked for the first time"+ item.getChannelName());
 
-                    singleChannelFragement = new SingleChannelFragement();
+
+                        singleChannelFragement = new SingleChannelFragement();
+                        ConnectTask myTask = null;
+                        myTask = new ConnectTask();
+                        myTask.execute("irc.freenode.net","6667", nick, item.getChannelName());
 
 //                      SingleChannelFragement singleChannelFragement = singleChannelFragement_list.get(position);
-                      Bundle bundle = new Bundle();
-                      bundle.putString("nick", nick);
-//                      bundle.putString("channel", channel);
-                      bundle.putString("channel", item.getChannelName());
-                      bundle.putString("port", randomPort());
+
                       singleChannelFragement.setArguments(bundle);
 
                       FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -144,7 +193,7 @@ public class ChannelFragment extends Fragment {
                       fragmentTransaction.addToBackStack(null);
                       fragmentTransaction.commit();
 //
-                  }else {
+                  }else { //  else if user just left that channel
                       if( singleChannelFragement == null){
                           Log.i("newchannel", "onItemClick: SingleChannelFragment was null");
                       }else{
@@ -152,15 +201,15 @@ public class ChannelFragment extends Fragment {
 
                       }
 
-                      FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        Log.i("item", "onItemClick:item clicked has been clicked before"+ item.getChannelName());
+
+                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                       fragmentTransaction.replace(R.id.layout_for_fragments, singleChannelFragement, "Single Channel Fragment");
                       fragmentTransaction.addToBackStack(null);
                       fragmentTransaction.commit();
                   }
+                    last_clicked_item_position = position; // store last_clicked_item_position
 
-
-//                    firstTime_array[position] = false;
-//                    firstTime = new ArrayList<Boolean>(Arrays.asList(firstTime_array));
 
                     Toast.makeText(getContext(), "LMAO", Toast.LENGTH_LONG).show();
                 }
@@ -170,7 +219,12 @@ public class ChannelFragment extends Fragment {
             addChannel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addChannel("#hoduw");
+                    String[] arr={"#jsfd", "#oalfcn", "#ojnfw", "#ojkns"};
+                    Random r=new Random();
+                    int randomNumber=r. nextInt(arr. length);
+
+                    String randChannel = arr[r.nextInt(arr.length)];
+                    addChannel(randChannel);
                 }
             });
 
@@ -210,6 +264,42 @@ public class ChannelFragment extends Fragment {
         String port = arr[r.nextInt(arr.length)];
 
         return port;
+    }
+
+
+    private class ConnectTask extends AsyncTask<String, String, Connection> {
+
+        @Override
+        protected Connection doInBackground(String... params) {
+            connection = new Connection(params[0],
+                    Integer.parseInt(params[1]),
+                    params[2],
+                    params[3]
+                    ,
+                    new Connection.MessageCallback() {
+                        @Override
+                        public void rcv(String message) {
+                            publishProgress(message);
+                        }
+                    });
+
+            try {
+                Log.i("Connection", "doInBackground:  Task Starting");
+                Log.i("connection", "doInBackground: Trying to connect with " + nick+ channel + "on port " + randomPort());
+
+                connection.start();
+                Log.i("Connection ", "doInBackground: Task done");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            singleChannelFragement.parseSrv(values[0], connection);
+        }
     }
 
 }

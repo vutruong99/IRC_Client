@@ -49,7 +49,7 @@ public class SingleChannelFragement extends Fragment {
     String channel;
     String nick;
     String port;
-    ConnectTask myTask;
+//    ConnectTask myTask = null;
 
     public SingleChannelFragement() {
         // Required empty public constructor
@@ -100,8 +100,8 @@ public class SingleChannelFragement extends Fragment {
          port =  bundle.getString("port");
 
 //        setTimeout(() -> new ConnectTask().execute("irc.freenode.net", "6667", nick, channel), 5000);
-        myTask = new ConnectTask();
-        myTask.execute("irc.freenode.net",port, nick, channel);
+//        myTask = new ConnectTask();
+//        myTask.execute("irc.freenode.net",port, nick, channel);
 
 //        setTimeout(() -> , 5000);
 
@@ -226,7 +226,8 @@ public class SingleChannelFragement extends Fragment {
         }
     }
 
-    private void parseSrv(String message) {
+    public void parseSrv(String message, Connection connection) {
+        this.connection = connection;
         String user = connection.host;
         String command = message;
         String param;
@@ -330,40 +331,40 @@ public class SingleChannelFragement extends Fragment {
         adapter2.notifyDataSetChanged();
     }
 
-    private class ConnectTask extends AsyncTask<String, String, Connection> {
-
-        @Override
-        protected Connection doInBackground(String... params) {
-            connection = new Connection(params[0],
-                    Integer.parseInt(params[1]),
-                    params[2],
-                    params[3]
-                    ,
-                    new Connection.MessageCallback() {
-                        @Override
-                        public void rcv(String message) {
-                            publishProgress(message);
-                        }
-                    });
-
-            try {
-                Log.i("Connection", "doInBackground:  Task Starting");
-                Log.i("connection", "doInBackground: Trying to connect with " + nick+ channel + "on port " + port);
-
-                connection.start();
-                Log.i("Connection ", "doInBackground: Task done");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(String... values) {
-            parseSrv(values[0]);
-        }
-    }
+//    private class ConnectTask extends AsyncTask<String, String, Connection> {
+//
+//        @Override
+//        protected Connection doInBackground(String... params) {
+//            connection = new Connection(params[0],
+//                    Integer.parseInt(params[1]),
+//                    params[2],
+//                    params[3]
+//                    ,
+//                    new Connection.MessageCallback() {
+//                        @Override
+//                        public void rcv(String message) {
+//                            publishProgress(message);
+//                        }
+//                    });
+//
+//            try {
+//                Log.i("Connection", "doInBackground:  Task Starting");
+//                Log.i("connection", "doInBackground: Trying to connect with " + nick+ channel + "on port " + port);
+//
+//                connection.start();
+//                Log.i("Connection ", "doInBackground: Task done");
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onProgressUpdate(String... values) {
+//            parseSrv(values[0]);
+//        }
+//    }
 
     @Override
     public void onDestroyView() {
@@ -381,10 +382,31 @@ public class SingleChannelFragement extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+//        getArguments().putParcelable("connection",connection);
+//        connection = null;
 //        myTask.cancel(true);
-        Log.i("onDestroy", "onDestroy: ");
+        Log.i("onDestroy", "Fragment onDestroy: ");
 
     }
+
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        connection.stop();
+
+    }
+
+    public Connection getPreviousConnection(){
+        return connection;
+    }
+
+    public void closeConnectino(){
+        connection.stop();
+
+    }
+
+
     public static void setTimeout(Runnable runnable, int delay){
         new Thread(() -> {
             try {
