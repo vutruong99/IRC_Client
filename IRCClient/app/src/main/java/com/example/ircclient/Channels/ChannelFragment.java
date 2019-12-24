@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.ircclient.Connection;
+import com.example.ircclient.MessageFragment;
 import com.example.ircclient.R;
 
 import java.io.IOException;
@@ -40,6 +41,7 @@ public class ChannelFragment extends Fragment {
     ListView channelListView;
     String channel;
     String nick;
+
     Boolean[] firstTime= new Boolean[20];   // boolean of arrays set to true for each channel
     int firstTime_counter = 0;  // to get the index of the newly added channel in firstTime array
     SingleChannelFragement singleChannelFragement;
@@ -103,12 +105,14 @@ public class ChannelFragment extends Fragment {
 
         Log.i("counter", "onViewCreated: first_counter"+ firstTime_counter);
 
+
             // When we call the Channel fragment from the drawer, it crashes because there is no bundle,
             // If I set bundle != null then it will show a blank list
             Bundle bundle = getArguments();
             if (bundle != null) {
                 nick = bundle.getString("nick");
                 channel = bundle.getString("channel");
+                new ConnectTask().execute("irc.freenode.net", "6667", nick, channel);
             }
 
             channelListView = getView().findViewById(R.id.channelListView);
@@ -173,10 +177,17 @@ public class ChannelFragment extends Fragment {
 //                    SingleChannelFragement singleChannelFragement;
                         Bundle bundle = new Bundle();
                         bundle.putString("nick", nick);
+
 //                      bundle.putString("channel", channel);
                         bundle.putString("channel", item.getChannelName());
                         bundle.putString("port", randomPort());
                         Log.i("item", "onItemClick:item clicked for the first time"+ item.getChannelName());
+
+                    assert item != null;
+                    bundle.putString("channel", item.getChannelName());
+                        bundle.putParcelable("connection",connection);
+                        singleChannelFragement.setArguments(bundle);
+
 
 
                         singleChannelFragement = new SingleChannelFragement();
@@ -255,6 +266,7 @@ public class ChannelFragment extends Fragment {
 
     }
 
+
     public String randomPort(){
         String[] arr={"6665", "6666", "6667", "8000"};
         Random r=new Random();
@@ -265,6 +277,7 @@ public class ChannelFragment extends Fragment {
 
         return port;
     }
+
 
 
     private class ConnectTask extends AsyncTask<String, String, Connection> {
@@ -285,7 +298,9 @@ public class ChannelFragment extends Fragment {
 
             try {
                 Log.i("Connection", "doInBackground:  Task Starting");
+
                 Log.i("connection", "doInBackground: Trying to connect with " + nick+ channel + "on port " + randomPort());
+
 
                 connection.start();
                 Log.i("Connection ", "doInBackground: Task done");
@@ -298,7 +313,11 @@ public class ChannelFragment extends Fragment {
 
         @Override
         protected void onProgressUpdate(String... values) {
+
             singleChannelFragement.parseSrv(values[0], connection);
+        }
+    }
+
         }
     }
 
