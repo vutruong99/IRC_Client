@@ -27,6 +27,7 @@ public class Connection implements Parcelable {
 
     BufferedReader in;
     PrintWriter out;
+    Socket socket;
 
     MessageCallback listener;
     boolean running;
@@ -68,7 +69,7 @@ public class Connection implements Parcelable {
         Log.i("Run connection", "onStartConnection: ");
         running = true;
 
-        Socket socket = new Socket(host, port);
+        socket = new Socket(host, port);
         try {
             out = new PrintWriter(new BufferedWriter
                     (new OutputStreamWriter
@@ -107,6 +108,12 @@ public class Connection implements Parcelable {
     public void stop() {
         Log.i("Stop connection", "onDestroyView: ");
         running = false;
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        System.exit(0);
     }
 
     public void send(String message) {
@@ -132,4 +139,5 @@ public class Connection implements Parcelable {
     public interface MessageCallback {
         void rcv(String message);
     }
+
 }

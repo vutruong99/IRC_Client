@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".MessageFragment">
+    tools:context=".MessageFragment"
+    android:id="@+id/fragment_message"
+    >
 
 <!-- TODO: Update blank fragment layout -->
     <!-- A horizontal line between the chatbox and RecyclerView -->
