@@ -58,7 +58,7 @@ public class LogsAdapter extends ArrayAdapter<String> {
             fromUser = true;
         }
         // if message is from receiver
-        if(item.contains("received") && !item.contains("Highest connection count:")){
+        if(item.contains("received") && !item.contains("Highest connection count:") && !item.contains("connect")){
             // change html to text
             str =   item.replaceAll("\\<.*?\\>", "").replaceAll("&lt;","").replaceAll("&gt;","").replaceAll("&#31;","").replaceAll("&nbsp;","").replaceAll("&#1;","");
             str = str.replaceAll("received", "");
@@ -105,10 +105,24 @@ public class LogsAdapter extends ArrayAdapter<String> {
 
             Log.i("HTML", "getView: " + (java.lang.String) item);
             if(fromUser) {
-                message_sent.setText(str);
+                String name, channel, message="";
+                String mes [] = str.split(" ");
+                for (int i = 2; i < mes.length; i++) {
+                    message = message + mes[i];
+                }
+                name = str.split(" ")[1];
+                channel = str.split(" ")[0];
+                message_sent.setText(message);
                 message_sent_time.setText(time);
             }else if(received){
-                message_received.setText(str);
+                String name, channel, message="";
+                String mes [] = str.split(" ");
+                for (int i = 2; i < mes.length; i++) {
+                    message = message + mes[i];
+                }
+                name = str.split(" ")[1];
+                channel = str.split(" ")[0];
+                message_received.setText(message);
                 message_received_time.setText(time);
             }else{  // message from server
                 line.setText(Html.fromHtml((java.lang.String) item, Html.FROM_HTML_MODE_COMPACT));

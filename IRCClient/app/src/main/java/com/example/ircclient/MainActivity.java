@@ -99,13 +99,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         int itemId = item.getItemId();
-
-        switch (itemId){
-            case R.id.action_settings:
-                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
-                startActivity(intent);
-                return true;
-        }
+//
+//        switch (itemId){
+//            case R.id.action_settings:
+//                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+//                startActivity(intent);
+//                return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
