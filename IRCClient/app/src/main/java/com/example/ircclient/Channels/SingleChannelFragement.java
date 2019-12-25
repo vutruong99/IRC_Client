@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Random;
 
 
-public class SingleChannelFragement extends Fragment {
+public class SingleChannelFragement extends Fragment  {
 
 
     Connection connection;
