@@ -39,7 +39,6 @@ public class ChannelListAdapter extends ArrayAdapter<Channel> {
         TextView tvChannelName = convertView.findViewById(R.id.channelName);
         TextView tvChannelDesc = convertView.findViewById(R.id.channelDescription);
 
-        tvChannelDesc.setText(channelDescription);
         tvChannelName.setText(channelName);
 
         return convertView;

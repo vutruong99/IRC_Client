@@ -18,14 +18,16 @@
 
     </ListView>
 
-    <Button
+    <ImageView
         android:id="@+id/addChannel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add channel"
-        android:layout_alignParentBottom="true">
+        android:contentDescription=""
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="65dp"
+        android:layout_margin="30dp"
+        android:layout_height="65dp"
+        android:src="@drawable/startnewconvo">
 
-    </Button>
-
+    </ImageView>
 
 </RelativeLayout>

@@ -10,6 +10,7 @@
 
 
     <TextView
+        android:layout_marginStart="25dp"
         android:id="@+id/text_message_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,15 +21,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:layout_marginStart="20dp"
         android:id="@+id/text_message_body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:background="@drawable/receive_message_grey"
         android:maxWidth="240dp"
-        android:padding="8dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:text="@string/hi_man_how_are_you"
-        android:textColor="#ffffff"
+        android:textColor="@color/black"
         android:textSize="17sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_message_name" />
@@ -39,8 +44,8 @@
         android:layout_height="24dp"
         android:layout_marginStart="4dp"
         android:text="11:40"
-        android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textColor="@color/lightGrey"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/text_message_body"
         app:layout_constraintLeft_toRightOf="@+id/text_message_body" />
 

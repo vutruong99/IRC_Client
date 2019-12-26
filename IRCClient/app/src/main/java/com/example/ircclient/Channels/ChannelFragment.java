@@ -1,6 +1,8 @@
 package com.example.ircclient.Channels;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -27,6 +31,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 
 
@@ -42,6 +47,8 @@ public class ChannelFragment extends Fragment implements SingleChannelFragement.
     String channel;
     String nick;
 
+
+    boolean newFirstTime = true;
     Boolean[] firstTime = new Boolean[20];   // boolean of arrays set to true for each channel
     int firstTime_counter = 0;  // to get the index of the newly added channel in firstTime array
     SingleChannelFragement singleChannelFragement;
@@ -78,11 +85,14 @@ public class ChannelFragment extends Fragment implements SingleChannelFragement.
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Bundle bundle = getArguments();
         if (bundle != null) {
             nick = bundle.getString("nick");
             channel = bundle.getString("channel");
         }
+
+
         channelList.add(new Channel(channel, "0 people"));
         firstTime[firstTime_counter] = true;
         firstTime_counter++;
@@ -131,6 +141,8 @@ public class ChannelFragment extends Fragment implements SingleChannelFragement.
         adapter = new ChannelListAdapter(getActivity(), R.layout.adapter_view_channel_layout, channelList);
         channelListView.setAdapter(adapter);
 
+
+
         channelListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -160,8 +172,11 @@ public class ChannelFragment extends Fragment implements SingleChannelFragement.
                  */
                 if (item != adapter.getItem(last_clicked_item_position)) {   // If user clicks a different channel from the one previously clicked
                     Log.i("item", "onItemClick: Stopping Previous connection");
-                    connection.stop();
-                    if (firstTime[position] == false) {   //  if channel has been clicked previously
+                    if (last_clicked_item_position > 0) {
+                        connection.stop();
+                    }
+
+                    if (!firstTime[position]) {   //  if channel has been clicked previously
                         Bundle bundle = new Bundle();
                         bundle.putString("nick", nick);
                         bundle.putString("channel", item.getChannelName());
@@ -234,16 +249,36 @@ public class ChannelFragment extends Fragment implements SingleChannelFragement.
             }
         });
 
-        Button addChannel = getView().findViewById(R.id.addChannel);
+        ImageView addChannel = getView().findViewById(R.id.addChannel);
         addChannel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String[] arr = {"#jsfd", "#oalfcn", "#ojnfw", "#ojkns"};
-                Random r = new Random();
-                int randomNumber = r.nextInt(arr.length);
+                AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                alert.setTitle("Start new convoooo");
+                alert.setMessage("Enter channel bro");
 
-                String randChannel = arr[r.nextInt(arr.length)];
-                addChannel(randChannel);
+                LayoutInflater inflater = getLayoutInflater();
+                final View newInput = inflater.inflate(R.layout.custom_alert_dialog_joinchannel, null);
+                alert.setView(newInput);
+
+                final EditText input = newInput.findViewById(R.id.et_joinChannel);
+
+                alert.setPositiveButton("JOIN ME", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                        addChannel(input.getText().toString());
+                    }
+                });
+
+                alert.setNegativeButton("NAH LATER", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Canceled.
+                    }
+                });
+
+                alert.show();
+
+
             }
         });
 

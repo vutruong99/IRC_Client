@@ -37,24 +37,24 @@
         app:layout_constraintRight_toRightOf="parent">
 
         <EditText
-            android:textColor="@color/white"
-            android:id="@+id/edittext_chatbox"
             android:layout_width="0dp"
+            android:width="0dp"
+            android:textColor="@color/black"
+            android:id="@+id/edittext_chatbox"
+            android:layout_weight="90"
             android:fontFamily="@font/roboto_regular"
             android:textSize="16sp"
             android:padding="10dp"
             android:textColorHint="@color/lightGrey"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_weight="1"
+            android:layout_marginStart="16dp"
             android:background="@drawable/custom_message_edit_box"
             android:hint="@string/message_hint"
             android:maxLines="6" />
 
         <Button
-            android:drawableTint="#0078ff"
+            android:backgroundTint="#0078ff"
             android:id="@+id/button_chatbox_send"
             android:layout_width="40dp"
             android:layout_height="40dp"

@@ -38,6 +38,7 @@ public class LogsAdapter extends ArrayAdapter<String> {
         String time="";
         item = StringEscapeUtils.unescapeHtml4(item);
         // get time from user message
+        assert item != null;
         if(item.contains("<<time>>")){
             Pattern pattern = Pattern.compile("``(.*?)``");
             Matcher matcher = pattern.matcher(item);
@@ -97,6 +98,7 @@ public class LogsAdapter extends ArrayAdapter<String> {
         TextView message_sent_time = (TextView) convertView.findViewById(R.id.text_message_time_sent);
         TextView message_received = (TextView) convertView.findViewById(R.id.text_message_body);
         TextView message_received_time = (TextView) convertView.findViewById(R.id.text_message_time_received);
+        TextView message_received_sender = convertView.findViewById(R.id.text_message_name);
 
 
         // Populate markup data
@@ -107,22 +109,25 @@ public class LogsAdapter extends ArrayAdapter<String> {
             if(fromUser) {
                 String name, channel, message="";
                 String mes [] = str.split(" ");
-                for (int i = 2; i < mes.length; i++) {
-                    message = message + mes[i];
+                for (int i = 3; i < mes.length; i++) {
+                    message = message + " " + mes[i];
                 }
+                Log.i("MESSAGE SENT", "" + str);
+                Log.i("MESSAGE SENT", "" + message);
                 name = str.split(" ")[1];
                 channel = str.split(" ")[0];
-                message_sent.setText(message);
+                message_sent.setText(message.substring(1));
                 message_sent_time.setText(time);
             }else if(received){
                 String name, channel, message="";
                 String mes [] = str.split(" ");
                 for (int i = 2; i < mes.length; i++) {
-                    message = message + mes[i];
+                    message = message + " " + mes[i];
                 }
                 name = str.split(" ")[1];
                 channel = str.split(" ")[0];
-                message_received.setText(message);
+                message_received_sender.setText(name);
+                message_received.setText(message.substring(1));
                 message_received_time.setText(time);
             }else{  // message from server
                 line.setText(Html.fromHtml((java.lang.String) item, Html.FROM_HTML_MODE_COMPACT));

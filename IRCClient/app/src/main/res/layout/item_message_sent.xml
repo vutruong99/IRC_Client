@@ -6,16 +6,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="8dp">
+    android:paddingTop="3dp">
 
     <TextView
+        android:layout_width="0dp"
         android:id="@+id/text_message_body"
         android:background="@drawable/sender_message_blue"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxWidth="200dp"
-        android:padding="8dp"
+        android:maxWidth="250dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:textSize="17sp"
+        android:text="aodkpasodkaspdksfd"
         android:textColor="@color/white"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/roboto_regular"

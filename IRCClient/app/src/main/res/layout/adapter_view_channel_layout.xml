@@ -12,18 +12,17 @@
         android:textSize="40sp"
         android:textColor="@color/black"
         android:id="@+id/channelName"
-        android:layout_weight="50">
+        android:layout_weight="100">
     </TextView>
 
     <TextView
         android:layout_width="0dp"
         android:gravity="center"
         android:layout_height="60dp"
-        android:text="Description"
         android:textSize="40sp"
         android:textColor="@color/black"
         android:id="@+id/channelDescription"
-        android:layout_weight="50">
+        android:layout_weight="0">
     </TextView>
 
 
