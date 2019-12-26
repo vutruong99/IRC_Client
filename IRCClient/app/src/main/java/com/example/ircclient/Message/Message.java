@@ -1,4 +1,4 @@
-package com.example.ircclient;
+package com.example.ircclient.Message;
 
 public class Message {
     private String content;

@@ -6,10 +6,6 @@
         android:title="@string/channels"
         android:icon="@drawable/ic_menu" />
     <item
-        android:id="@+id/settings"
-        android:title="@string/settings"
-        android:icon="@drawable/ic_event"/>
-    <item
         android:id="@+id/about"
         android:title="@string/about"
         android:icon="@drawable/ic_settings"/>

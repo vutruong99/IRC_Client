@@ -17,6 +17,7 @@
         android:layout_marginTop="4dp"
         android:text="@string/john_doe"
         android:textSize="12sp"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

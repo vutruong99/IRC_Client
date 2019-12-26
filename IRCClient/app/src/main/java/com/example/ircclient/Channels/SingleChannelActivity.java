@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.example.ircclient.Connection;
 import com.example.ircclient.LogsAdapter;
-import com.example.ircclient.MessageAdapter;
+import com.example.ircclient.Message.MessageAdapter;
 import com.example.ircclient.R;
 
 import java.io.IOException;

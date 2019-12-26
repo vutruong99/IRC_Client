@@ -1,20 +1,19 @@
-package com.example.ircclient;
+package com.example.ircclient.Message;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import com.example.ircclient.Connection;
+import com.example.ircclient.R;
 
 import java.io.IOException;
 import java.text.DateFormat;

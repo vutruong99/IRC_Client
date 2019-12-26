@@ -1,9 +1,7 @@
 package com.example.ircclient.Channels;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,26 +18,24 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.ircclient.Connection;
 import com.example.ircclient.LogsAdapter;
-import com.example.ircclient.MessageAdapter;
+import com.example.ircclient.Message.MessageAdapter;
+import com.example.ircclient.PopUpHelp;
 import com.example.ircclient.R;
 
-import java.io.IOException;
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 
-public class SingleChannelFragement extends Fragment  {
-
+public class SingleChannelFragment extends Fragment {
 
     Connection connection;
     MessageAdapter adapter;
@@ -47,17 +43,16 @@ public class SingleChannelFragement extends Fragment  {
     Button send;
     private ArrayAdapter<String> adapter2;
 
-    private ListView logs;
-    private List<String> items =new ArrayList<>();
+    private List<String> items = new ArrayList<>();
     String channel;
-//    String newly_joined_channel;
+    //    String newly_joined_channel;
     String nick;
     String port;
     String no_of_server;
     MenuItem item_channel_name;
     MenuItem item_channel_users;
 
-//    ConnectTask myTask = null;
+    //    ConnectTask myTask = null;
     private FragmentCallback fragmentCallback;
 
     public void setFragmentCallback(FragmentCallback callback) {
@@ -65,7 +60,7 @@ public class SingleChannelFragement extends Fragment  {
     }
 
 
-    public SingleChannelFragement() {
+    public SingleChannelFragment() {
         // Required empty public constructor
     }
 
@@ -102,11 +97,9 @@ public class SingleChannelFragement extends Fragment  {
         Log.i("onCreateView", "onCreateView:  SingleChannel");
 
         // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_message, container, false);
 
 
-
-        return v;
+        return inflater.inflate(R.layout.fragment_message, container, false);
     }
 
     @Override
@@ -116,15 +109,16 @@ public class SingleChannelFragement extends Fragment  {
 //        inflater.inflate(R.menu.settings_menu, menu);
 //        View menu = getLayoutInflater().inflate(R.menu.settings_menu);
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             connection = (Connection) savedInstanceState.getSerializable("connection");
             Log.i("Recovered Con", "onViewCreated: " + connection.nick);
         }
         Bundle bundle = getArguments();
 
+        assert bundle != null;
         channel = bundle.getString("channel");
-         nick = bundle.getString("nick");
-         port =  bundle.getString("port");
+        nick = bundle.getString("nick");
+        port = bundle.getString("port");
 
 //        setTimeout(() -> new ConnectTask().execute("irc.freenode.net", "6667", nick, channel), 5000);
 //        myTask = new ConnectTask();
@@ -133,20 +127,18 @@ public class SingleChannelFragement extends Fragment  {
 //        setTimeout(() -> , 5000);
 
 
-
-
-        if(connection == null){
+        if (connection == null) {
             Log.i("connection", "onViewCreated: connection is null");
-        } else{
+        } else {
             Log.i("connection", "onViewCreated: connection is not null");
         }
         Log.i("onViewCreated", "onViewCreated:  SingleChannel");
 
 
-        logs = (ListView) getView().findViewById(R.id.message_container);
+        ListView logs = (ListView) Objects.requireNonNull(getView()).findViewById(R.id.message_container);
 //        adapter2 = new LogsAdapter<String>(getActivity(),items);
 
-        adapter2 = new LogsAdapter(getContext(),items );
+        adapter2 = new LogsAdapter(getContext(), items);
 
 
         logs.setAdapter(adapter2);
@@ -160,10 +152,9 @@ public class SingleChannelFragement extends Fragment  {
 //        channelName.setText(bundle.getString("channel"));
 
 
-
-        String[] arr={"1", "2", "3", "4", "5"};
-        Random r=new Random();
-        int randomNumber=r. nextInt(arr. length);
+        String[] arr = {"1", "2", "3", "4", "5"};
+        Random r = new Random();
+        int randomNumber = r.nextInt(arr.length);
 
 //        new ConnectTask().execute("irc.freenode.net", arr[r.nextInt(arr.length)]+arr[r.nextInt(arr.length)]+arr[r.nextInt(arr.length)]+arr[r.nextInt(arr.length)], nick, channel);
 
@@ -178,10 +169,10 @@ public class SingleChannelFragement extends Fragment  {
 
                 //Get time and convert to string
                 Date currentTime = Calendar.getInstance().getTime();
-                DateFormat dateFormat = new SimpleDateFormat("hh:mm");
+                @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("hh:mm");
                 strTime = dateFormat.format(currentTime);
 
-                parseIn(chatBox.getText().toString() , channel);
+                parseIn(chatBox.getText().toString(), channel);
                 chatBox.getText().clear();
 
             }
@@ -189,13 +180,13 @@ public class SingleChannelFragement extends Fragment  {
 
     }
 
-    public void getNo_of_User(String message, String channel){
-        parseIn(message,  channel);
+    public void getNo_of_User(String message, String channel) {
+        parseIn(message, channel);
     }
 
 
     private void parseIn(String message, String channel) {
-        String tmp[];
+        String[] tmp;
 
         message = message.trim();
         if (message.isEmpty())
@@ -215,38 +206,58 @@ public class SingleChannelFragement extends Fragment  {
         } else if (message.startsWith("/join")) {
             tmp = message.split(" ", 3);
             join(tmp[1]);
-            parseIn("/list "+ message,  channel);
+            parseIn("/list " + message, channel);
 
         } else if (message.startsWith("/list")) {
             tmp = message.split(" ", 3);
-            try{
+            try {
                 connection.send("LIST " + tmp[1]);
-            }catch (ArrayIndexOutOfBoundsException e){
+            } catch (ArrayIndexOutOfBoundsException e) {
                 connection.send("LIST " + channel);
-
             }
-
 
         } else if (message.startsWith("/name")) {
 
             tmp = message.split(" ", 3);
-            try{
+            try {
                 connection.send("NAMES " + tmp[1]);
-            }catch (ArrayIndexOutOfBoundsException e){
+            } catch (ArrayIndexOutOfBoundsException e) {
                 connection.send("NAMES " + channel);
             }
 
+        } else if (message.startsWith("/help")) {
+            Intent popUpIntent = new Intent(getContext(), PopUpHelp.class);
+            startActivity(popUpIntent);
+
         } else if (message.startsWith("/part")) {
+            tmp = message.split(" ");
+            if (tmp.length >= 3)
+                part(tmp[1], tmp[2]);
+            else if (tmp.length == 2)
+                part(tmp[1], "");
+            else
+                part("", "");
+        } else if (message.startsWith("/switch")) {
             tmp = message.split(" ", 2);
 
         } else {
-            log(message);
+            connection.send(message.substring(1));
         }
+    }
+
+    private void part(String channel, String message) {
+        if (channel.isEmpty() && this.channel.equals("No channel"))
+            return;
+        if (channel.isEmpty())
+            channel = this.channel;
+        if (message.isEmpty())
+            message = "I HATE THIS CHANNEL";
+        connection.send("PART " + channel + " :" + message);
     }
 
     private void privmsg(String channel, String message) {
         Date currentTime_ = Calendar.getInstance().getTime();
-        DateFormat dateFormat_ = new SimpleDateFormat("hh:mm");
+        @SuppressLint("SimpleDateFormat") DateFormat dateFormat_ = new SimpleDateFormat("hh:mm");
         String strTime_ = dateFormat_.format(currentTime_);
         connection.send("PRIVMSG " + channel + " :" + message);
 //        "``<<time>>"+ strTime_ + "``"
@@ -264,18 +275,14 @@ public class SingleChannelFragement extends Fragment  {
         if (!channel.isEmpty()) {
             connection.send("JOIN " + channel);
             this.channel = channel;
-
-
 //            ChannelFragment channelFragment = new ChannelFragment();
 //            View channelFragment = getLayoutInflater().inflate(R.layout.fragment_channel, container, false);
 
 //            channelFragment.addChannel(channel);
-            if(fragmentCallback != null){
+            if (fragmentCallback != null) {
                 fragmentCallback.onDataSent(channel);
             }
-        }
-
-        else {
+        } else {
             log("Unknown command");
         }
     }
@@ -286,10 +293,10 @@ public class SingleChannelFragement extends Fragment  {
         String command = message;
         String param;
         String text;
-        String tmp[];
+        String[] tmp;
         Date currentTime = Calendar.getInstance().getTime();
-        DateFormat dateFormat = new SimpleDateFormat("hh:mm");
-        Log.i("parse", "parseSrv: "+ message );
+        @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("hh:mm");
+        Log.i("parse", "parseSrv: " + message);
 
 
         if (command.isEmpty())
@@ -305,10 +312,9 @@ public class SingleChannelFragement extends Fragment  {
             user = user.split("!", 2)[0];
         }
 
-
         tmp = command.split(" ", 2);
         command = tmp[0];
-        param = tmp.length == 2 ? tmp[1]: "";
+        param = tmp.length == 2 ? tmp[1] : "";
 
         tmp = param.split(":", 2);
         param = tmp.length >= 1 ? tmp[0].trim() : "";
@@ -317,40 +323,37 @@ public class SingleChannelFragement extends Fragment  {
         text = Html.escapeHtml(text);
         if (command.equals("PONG") || command.equals("MODE"))
             return;
-        if (command.equals("353")){
+        if (command.equals("353")) {
             log(param);
             return;
         }
-        if (command.equals("PING")) {}
-        if(command.equals("322")){
-
-            no_of_server = param.split(" ")[2] ;
-            item_channel_name.setTitle("Name: " +channel);
-            item_channel_users.setTitle("No of users: "+no_of_server);
-//            log(param.split(" ")[5]);
-            Log.i("parse", "parseSrv: no of user "+ no_of_server);
+        if (command.equals("PING")) {
             return;
+        }
+
+        if (command.equals("322")) {
+            no_of_server = param.split(" ")[2];
+            item_channel_name.setTitle("Name: " + channel);
+            item_channel_users.setTitle("No of users: " + no_of_server);
+//            log(param.split(" ")[5]);
+            Log.i("parse", "parseSrv: no of user " + no_of_server);
 //            }
         }
-//        if (message.contains()){
 //
-//        }
-
         else if (command.equals("PRIVMSG")) {
 //            log(String.format("<font color=\"#A500A5\">%s</font>: " +
 //                    "<font color=\"#009c00\">&lt;</font>" +
 //                    "%s<font color=\"#009c00\">&gt;</font> " +
 //                    "%s", param, user, text));
             strTime = dateFormat.format(currentTime);
-            Log.i("Converted", "parseSrv: "+ text);
-            log(param +": "+  user + " "+text+ "``<<time>>"+ strTime + "``" + "received" );
-        }
-        else if (command.equals("JOIN")) {
+            Log.i("Converted", "parseSrv: " + text);
+            log(param + ": " + user + " " + text + "``<<time>>" + strTime + "``" + "received");
+        } else if (command.equals("JOIN")) {
             param = !param.isEmpty() ? param : text;
             if (user.equals(connection.nick)) {
                 log("You have joined channel <strong>" +
                         "<font color=\"#A500A5\">" + param + "</font></strong>");
-                parseIn("/list "+ channel,  channel);
+                parseIn("/list " + channel, channel);
 
 //                log("You have joined channel " + param );
                 //this.channel = param;
@@ -372,8 +375,8 @@ public class SingleChannelFragement extends Fragment  {
             }
         else if (command.equals("NOTICE"))
             log(String.format("<font color=\"#009c9c\">-</font>" +
-                    "<font color=\"#FF4500\">%s</font>" +
-                    "<font color=\"#FF4500\">-</font> " +
+                    "<font color=\"#CD5C5C\">%s</font>" +
+                    "<font color=\"#CD5C5C\">-</font> " +
                     "%s", user, text));
         else if (command.equals("PART"))
             if (user.equals(connection.nick)) {
@@ -385,8 +388,7 @@ public class SingleChannelFragement extends Fragment  {
             }
         else if (command.equals("LIST")) {
 
-        }
-        else if (command.equals("QUIT"))
+        } else if (command.equals("QUIT"))
             ;
         else if (command.equals("TOPIC"))
             log("Topic for channel <font color=\"#009c9c\">" + param +
@@ -397,7 +399,7 @@ public class SingleChannelFragement extends Fragment  {
                     "</font> is <font color=\"#009c9c\">" + text + "</font>");
 
         else if (!text.isEmpty() && !text.contains("Name") && !text.contains("End of")) {
-            log("<font color=\"#555555\">* " + text + "</font> " + " default");
+            log("<font color=\"#555555\">* " + text + "</font> ");
         }
     }
 
@@ -444,9 +446,9 @@ public class SingleChannelFragement extends Fragment  {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(connection == null){
+        if (connection == null) {
             Log.i("connection", "onDestroy: connection is null");
-        } else{
+        } else {
             Log.i("connection", "onDestroy: connection is not null");
         }
 //        connection.stop();
@@ -472,27 +474,26 @@ public class SingleChannelFragement extends Fragment  {
 
     }
 
-    public Connection getPreviousConnection(){
+    public Connection getPreviousConnection() {
         return connection;
     }
 
-    public void closeConnectino(){
+    public void closeConnectino() {
         connection.stop();
 
     }
 
-    public  void setConnection(Connection connection){
+    public void setConnection(Connection connection) {
         this.connection = connection;
     }
 
 
-    public static void setTimeout(Runnable runnable, int delay){
+    public static void setTimeout(Runnable runnable, int delay) {
         new Thread(() -> {
             try {
                 Thread.sleep(delay);
                 runnable.run();
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 System.err.println(e);
             }
         }).start();
@@ -501,7 +502,6 @@ public class SingleChannelFragement extends Fragment  {
     public interface FragmentCallback {
         void onDataSent(String yourData);
     }
-
 }
 
 

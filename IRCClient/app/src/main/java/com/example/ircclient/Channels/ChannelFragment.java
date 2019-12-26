@@ -3,45 +3,38 @@ package com.example.ircclient.Channels;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.ircclient.Connection;
-import com.example.ircclient.MessageFragment;
 import com.example.ircclient.R;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.Random;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChannelFragment extends Fragment implements SingleChannelFragement.FragmentCallback {
+public class ChannelFragment extends Fragment implements SingleChannelFragment.FragmentCallback {
 
     ArrayList<Channel> channelList = new ArrayList<>();
-    //    ArrayList<SingleChannelFragement> singleChannelFragement_list = new ArrayList<>();
+    //    ArrayList<SingleChannelFragment> singleChannelFragement_list = new ArrayList<>();
     ChannelListAdapter adapter;
     ListView channelListView;
     String channel;
@@ -51,7 +44,7 @@ public class ChannelFragment extends Fragment implements SingleChannelFragement.
     boolean newFirstTime = true;
     Boolean[] firstTime = new Boolean[20];   // boolean of arrays set to true for each channel
     int firstTime_counter = 0;  // to get the index of the newly added channel in firstTime array
-    SingleChannelFragement singleChannelFragement;
+    SingleChannelFragment singleChannelFragment;
     int last_clicked_item_position; // get position id of the last item clicked in the listview
 //    ArrayList<Connection> connectionList= new ArrayList<>();
 //    int currentPositon;
@@ -96,8 +89,8 @@ public class ChannelFragment extends Fragment implements SingleChannelFragement.
         channelList.add(new Channel(channel, "0 people"));
         firstTime[firstTime_counter] = true;
         firstTime_counter++;
-//        SingleChannelFragement singleChannelFragement= new SingleChannelFragement();
-//        singleChannelFragement_list.add(singleChannelFragement);
+//        SingleChannelFragment singleChannelFragment= new SingleChannelFragment();
+//        singleChannelFragement_list.add(singleChannelFragment);
 
     }
 
@@ -118,7 +111,7 @@ public class ChannelFragment extends Fragment implements SingleChannelFragement.
         if (savedInstanceState != null) {
             channelList = (ArrayList<Channel>) savedInstanceState.getSerializable("list");
 //            connectionList = (ArrayList<Connection>) savedInstanceState.getSerializable("connectionList");
-//            singleChannelFragement_list = (ArrayList<SingleChannelFragement>) savedInstanceState.getSerializable("listF");
+//            singleChannelFragement_list = (ArrayList<SingleChannelFragment>) savedInstanceState.getSerializable("listF");
             firstTime = (Boolean[]) savedInstanceState.getSerializable("firstTime");
             firstTime_counter = savedInstanceState.getInt("firstTime_counter");
             last_clicked_item_position = savedInstanceState.getInt("last_clicked_item_position");
@@ -183,18 +176,18 @@ public class ChannelFragment extends Fragment implements SingleChannelFragement.
                         bundle.putString("port", randomPort());
 
 
-                        singleChannelFragement = new SingleChannelFragement();
-                        singleChannelFragement.setFragmentCallback(channelFragment);
+                        singleChannelFragment = new SingleChannelFragment();
+                        singleChannelFragment.setFragmentCallback(channelFragment);
 
                         ConnectTask myTask = null;
                         myTask = new ConnectTask();
                         myTask.execute("irc.freenode.net", "6667", nick, item.getChannelName());
 
 
-                        singleChannelFragement.setArguments(bundle);
+                        singleChannelFragment.setArguments(bundle);
 
                         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.layout_for_fragments, singleChannelFragement, "Single Channel Fragment");
+                        fragmentTransaction.replace(R.id.layout_for_fragments, singleChannelFragment, "Single Channel Fragment");
                         fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.commit();
                     }
@@ -202,7 +195,7 @@ public class ChannelFragment extends Fragment implements SingleChannelFragement.
                 }
                 if (firstTime[position]) { // If user clicks channel for the first time
                     firstTime[position] = false;
-//                    SingleChannelFragement singleChannelFragement;
+//                    SingleChannelFragment singleChannelFragment;
                     Bundle bundle = new Bundle();
                     bundle.putString("nick", nick);
 
@@ -211,24 +204,24 @@ public class ChannelFragment extends Fragment implements SingleChannelFragement.
                     bundle.putString("port", randomPort());
                     Log.i("item", "onItemClick:item clicked for the first time" + item.getChannelName());
 
-                    singleChannelFragement = new SingleChannelFragement();
-                    singleChannelFragement.setFragmentCallback(channelFragment);
+                    singleChannelFragment = new SingleChannelFragment();
+                    singleChannelFragment.setFragmentCallback(channelFragment);
 
                     ConnectTask myTask = null;
                     myTask = new ConnectTask();
                     myTask.execute("irc.freenode.net", "6667", nick, item.getChannelName());
 
-//                      SingleChannelFragement singleChannelFragement = singleChannelFragement_list.get(position);
+//                      SingleChannelFragment singleChannelFragment = singleChannelFragement_list.get(position);
 
-                    singleChannelFragement.setArguments(bundle);
+                    singleChannelFragment.setArguments(bundle);
 
                     FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.layout_for_fragments, singleChannelFragement, "Single Channel Fragment");
+                    fragmentTransaction.replace(R.id.layout_for_fragments, singleChannelFragment, "Single Channel Fragment");
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
 //
                 } else { //  else if user just left that channel
-                    if (singleChannelFragement == null) {
+                    if (singleChannelFragment == null) {
                         Log.i("newchannel", "onItemClick: SingleChannelFragment was null");
                     } else {
                         Log.i("newchannel", "onItemClick: SingleChannelFragment is not null");
@@ -236,9 +229,9 @@ public class ChannelFragment extends Fragment implements SingleChannelFragement.
                     }
 
                     Log.i("item", "onItemClick:item clicked has been clicked before" + item.getChannelName());
-//                        singleChannelFragement.setConnection(connectionList.get(position));
+//                        singleChannelFragment.setConnection(connectionList.get(position));
                     FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.layout_for_fragments, singleChannelFragement, "Single Channel Fragment");
+                    fragmentTransaction.replace(R.id.layout_for_fragments, singleChannelFragment, "Single Channel Fragment");
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                 }
@@ -289,8 +282,8 @@ public class ChannelFragment extends Fragment implements SingleChannelFragement.
         channelList.add(new Channel(channel, "0 people"));
         firstTime[firstTime_counter] = true;
         firstTime_counter++;
-//        SingleChannelFragement singleChannelFragement= new SingleChannelFragement();
-//        singleChannelFragement_list.add(singleChannelFragement);
+//        SingleChannelFragment singleChannelFragment= new SingleChannelFragment();
+//        singleChannelFragement_list.add(singleChannelFragment);
         adapter.notifyDataSetChanged();
 
     }
@@ -358,7 +351,7 @@ public class ChannelFragment extends Fragment implements SingleChannelFragement.
         @Override
         protected void onProgressUpdate(String... values) {
 
-            singleChannelFragement.parseSrv(values[0], connection);
+            singleChannelFragment.parseSrv(values[0], connection);
         }
     }
 }

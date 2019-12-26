@@ -53,5 +53,17 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="channel_name">channel name</string>
     <string name="channel_users">Channel users</string>
+    <string name="close_all_connections">Close all connections</string>
+    <string name="quit">/quit</string>
+    <string name="leave_channel_with_a_message">Leave channel with a message</string>
+    <string name="part_message">/part message</string>
+    <string name="list_channel_members">List channel members</string>
+    <string name="name">/name</string>
+    <string name="nick_nickname">/nick nickname</string>
+    <string name="change_nickname">Change nickname</string>
+    <string name="join_channel">/join #channel</string>
+    <string name="join_a_channel">Join a channel</string>
+    <string name="quit_a_channel_with_a_note">Quit a channel with a note</string>
+    <string name="part_note">/part note</string>
 
 </resources>

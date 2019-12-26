@@ -1,4 +1,4 @@
-package com.example.ircclient;
+package com.example.ircclient.Message;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,8 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.ircclient.R;
+
 import java.util.ArrayList;
-import java.util.Dictionary;
 
 public class MessageAdapter extends ArrayAdapter<Message> {
 
